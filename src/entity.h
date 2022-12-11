@@ -4,19 +4,17 @@
 class Entity
 {
 public:
-    Entity(const char *filename, SDL_Renderer *r);
+    Entity(const char *filename, int x, int y);
     ~Entity();
 
     void update();
     void render();
 
 private:
-    int x;
-    int y;
+    int xPos;
+    int yPos;
 
     SDL_Texture* texture;
     SDL_Rect srcRect;
     SDL_Rect destRect;
-
-    SDL_Renderer* renderer;
 };
