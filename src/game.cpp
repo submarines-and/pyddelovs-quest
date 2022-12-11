@@ -1,17 +1,14 @@
 #include "game.h"
 #include "texture-manager.h"
-#include "game-object.h"
 #include "map.h"
-#include "ecs.h"
-#include "components.h"
+#include "ecs/ecs.h"
+#include "ecs/components.h"
 
-GameObject *pyddelov;
 Map *map;
-
 SDL_Renderer *Game::renderer = nullptr;
 
 Manager manager;
-auto &newPlayer(manager.addEntity());
+auto &player(manager.addEntity());
 
 Game::Game()
 {
@@ -42,12 +39,12 @@ void Game::init(const char *title, int x, int y, int width, int height, bool ful
         isRunning = false;
     }
 
-    // load pyddelov
-    pyddelov = new GameObject("assets/pyddelov.png", 100, 100);
+    // starting map?
     map = new Map();
 
     // give access to pos variables
-    newPlayer.addComponent<PositionComponent>();
+    player.addComponent<PositionComponent>(100, 500);
+    player.addComponent<SpriteComponent>("assets/pyddelov.png");
 }
 
 void Game::handleEvents()
@@ -68,7 +65,7 @@ void Game::handleEvents()
 
 void Game::update()
 {
-    pyddelov->update();
+    manager.refresh();
     manager.update();
 }
 
@@ -76,7 +73,8 @@ void Game::render()
 {
     SDL_RenderClear(renderer);
     map->render();
-    pyddelov->render();
+
+    manager.render();
     SDL_RenderPresent(renderer);
 }
 
