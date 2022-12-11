@@ -1,10 +1,12 @@
 #include "game.h"
 #include "texture-manager.h"
 #include "entity.h"
+#include "map.h"
 
 
 Entity *pyddelov;
 SDL_Renderer* Game::renderer = nullptr;
+Map* map;
 
 Game::Game()
 {
@@ -39,6 +41,7 @@ void Game::init(const char *title, int x, int y, int width, int height, bool ful
 
     // load pyddelov
     pyddelov = new Entity("assets/pyddelov.png", 100, 100);
+    map = new Map();
 }
 
 void Game::handleEvents()
@@ -65,6 +68,7 @@ void Game::update()
 void Game::render()
 {
     SDL_RenderClear(renderer);
+    map->render();
     pyddelov->render();
     SDL_RenderPresent(renderer);
 }
