@@ -10,8 +10,13 @@ private:
 
 public:
     SpriteComponent() = default;
+
     SpriteComponent(const char* filepath) {
         setTexture(filepath);
+    }
+
+    ~SpriteComponent() {
+        SDL_DestroyTexture(texture);
     }
 
     void setTexture(const char* filepath) {
@@ -20,11 +25,15 @@ public:
 
     void init() override {
         transform = &entity->getComponent<TransformComponent>();
+
         srcRect.x = srcRect.y = 0;
         destRect.x = destRect.y = 0;
 
-        srcRect.w = srcRect.h = 32;
-        destRect.w = destRect.h = 64;
+        srcRect.w = (int)transform->width;
+        srcRect.h = (int)transform->height;
+
+        destRect.w = srcRect.w * transform->scale;
+        destRect.h = srcRect.h * transform->scale;
     }
 
     void update() override {
