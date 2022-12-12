@@ -47,6 +47,21 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     }
 
     Map::generate(width, height);
+    for (auto t : Map::tiles) {
+        auto& tile(manager.addEntity());
+        tile.addComponent<TileComponent>(t.x, t.y, 32, 32, t.typeId);
+        tile.addGroup(TERRAIN);
+
+        switch (t.typeId) {
+        case TileComponent::ROCK:
+        case TileComponent::WATER:
+            tile.addComponent<CollisionComponent>();
+            break;
+
+        default:
+            break;
+        }
+    }
 
     player.addComponent<TransformComponent>(100.0f, 100.0f);
     player.addComponent<SpriteComponent>("assets/pyddelov.png");
@@ -113,21 +128,4 @@ void Game::clean()
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
-}
-
-void Game::addTile(int id, int x, int y)
-{
-    auto& tile(manager.addEntity());
-    tile.addComponent<TileComponent>(x, y, 32, 32, id);
-    tile.addGroup(TERRAIN);
-
-    switch (id) {
-    case TileComponent::ROCK:
-    case TileComponent::WATER:
-        tile.addComponent<CollisionComponent>();
-        break;
-
-    default:
-        break;
-    }
 }

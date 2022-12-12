@@ -1,4 +1,11 @@
 #pragma once
+#include <vector>
+
+struct TilePlacement {
+    int x;
+    int y;
+    int typeId;
+};
 
 class Map {
 public:
@@ -6,4 +13,5 @@ public:
     ~Map();
 
     static void generate(int width, int height);
+    static std::vector<TilePlacement> tiles;
 };
