@@ -9,8 +9,8 @@ public:
     /** Available types */
     enum TextureType {
         WATER,
-        GRASS,
         DIRT,
+        GRASS,
     };
 
     void load(int mapArray[20][25]);

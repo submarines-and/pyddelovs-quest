@@ -1,6 +1,9 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <vector>
+
+class CollisionComponent;
 
 class Game {
 
@@ -17,9 +20,12 @@ public:
 
     bool running() { return isRunning; }
 
-    // Global renderer
+    /** Global renderer */
     static SDL_Renderer* renderer;
     static SDL_Event event;
+
+    /** All collidable objects */
+    static std::vector<CollisionComponent*> colliders;
 
 private:
     bool isRunning;
