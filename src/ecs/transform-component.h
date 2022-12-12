@@ -15,8 +15,7 @@ public:
 
     /** If no size specified*/
     TransformComponent() {
-        position.x = 0.0f;
-        position.y = 0.0f;
+        position.zero();
     }
 
     /** Custom position */
@@ -35,7 +34,7 @@ public:
     }
 
     void init() override {
-        velocity.x = velocity.y = 0;
+        velocity.zero();
     }
 
     void update() override {

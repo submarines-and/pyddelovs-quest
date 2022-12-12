@@ -67,7 +67,9 @@ void Game::update() {
     manager.refresh();
     manager.update();
 
-    if(Collision::isColliding(player.getComponent<CollisionComponent>().collider, (wall.getComponent<CollisionComponent>().collider ))){
+    // bounce on collision
+    if (Collision::isColliding(player.getComponent<CollisionComponent>().collider, (wall.getComponent<CollisionComponent>().collider))) {
+        player.getComponent<TransformComponent>().velocity * -1;
     }
 }
 
