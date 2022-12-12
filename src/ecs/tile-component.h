@@ -21,7 +21,7 @@ public:
     };
 
     TileComponent() = default;
-    TileComponent(int x, int y, int w, int h, TextureType id) {
+    TileComponent(int x, int y, int w, int h, int id) {
         tileRect.x = x;
         tileRect.y = y;
         tileRect.w = w;

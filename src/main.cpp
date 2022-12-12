@@ -8,7 +8,7 @@ int main() {
     int frameTime;
 
     Game* game = new Game();
-    game->init("Pyddelovs Quest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false);
+    game->init("Pyddelovs Quest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 576, false);
 
     while (game->running()) {
         frameStart = SDL_GetTicks();
