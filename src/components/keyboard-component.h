@@ -1,5 +1,5 @@
 #pragma once
-#include "ecs.h"
+#include "../ecs.h"
 #include "transform-component.h"
 #include "../game.h"
 
