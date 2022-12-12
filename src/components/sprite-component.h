@@ -49,13 +49,8 @@ public:
         transform = &entity->getComponent<TransformComponent>();
 
         srcRect.x = srcRect.y = 0;
-        destRect.x = destRect.y = 0;
-
         srcRect.w = transform->width;
         srcRect.h = transform->height;
-
-        destRect.w = srcRect.w * transform->scale;
-        destRect.h = srcRect.h * transform->scale;
     }
 
     void update() override

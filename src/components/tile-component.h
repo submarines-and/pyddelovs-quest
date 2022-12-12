@@ -19,6 +19,7 @@ public:
         ROCK,
         GRASS,
         SAND,
+        SNOW,
     };
 
     TileComponent() = default;
@@ -47,6 +48,10 @@ public:
 
         case GRASS:
             filepath = "assets/grass.png";
+            break;
+
+        case SNOW:
+            filepath = "assets/snow.png";
             break;
         }
     }
