@@ -28,8 +28,8 @@ public:
     }
 
     void update() override {
-        destRect.x = transform->x();
-        destRect.y = transform->y();
+        destRect.x = (int)transform->position.x;
+        destRect.y = (int)transform->position.y;
     }
 
     void render() override {
