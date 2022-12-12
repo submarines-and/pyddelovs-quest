@@ -6,9 +6,10 @@
 #include "vector2d.h"
 
 Map* map;
-SDL_Renderer* Game::renderer = nullptr;
-
 Manager manager;
+
+SDL_Renderer* Game::renderer = nullptr;
+SDL_Event Game::event;
 auto& player(manager.addEntity());
 
 Game::Game() {
@@ -39,10 +40,10 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     // give access to pos variables
     player.addComponent<TransformComponent>(100.0f, 100.0f);
     player.addComponent<SpriteComponent>("assets/pyddelov.png");
+    player.addComponent<KeyboardComponent>();
 }
 
 void Game::handleEvents() {
-    SDL_Event event;
     SDL_PollEvent(&event);
 
     switch (event.type) {
@@ -58,8 +59,6 @@ void Game::handleEvents() {
 void Game::update() {
     manager.refresh();
     manager.update();
-
-  //  player.getComponent<TransformComponent>().position.add(Vector2d(5, 0));
 }
 
 void Game::render() {
