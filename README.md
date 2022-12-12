@@ -1,5 +1,5 @@
 # Pyddelovs Quest
-You are a small fox and the winter is very cold. Will you make it home to your den before it is too late?
+You are a small, cold fox and the graphics are very confusing. Will you make it home to your den before it is too late?
 
 <img src="./assets/pyddelov.png" width="150"/>
 
