@@ -10,7 +10,6 @@
 
 #include "map.h"
 #include "vector2d.h"
-#include <iostream>
 
 Manager manager;
 SDL_Renderer* Game::renderer = nullptr;
@@ -88,7 +87,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     }
 
     // start music
-    soundManager.playMusic("sound/forest.mp3");
+    soundManager.playMusic("sound/music/forest.mp3");
 }
 
 void Game::handleEvents()
