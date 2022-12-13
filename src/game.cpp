@@ -72,7 +72,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
 
         // place on a grass tile
         auto tile = Map::tiles[i];
-        if (tile.typeId == TileComponent::SNOW) {
+        if (tile.typeId == TileComponent::GRASS) {
             player.addComponent<TransformComponent>(tile.x, tile.y);
             placed = true;
         }

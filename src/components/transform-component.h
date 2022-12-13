@@ -10,35 +10,47 @@ public:
     int height = 32;
     int width = 32;
     int scale = 1;
-
-    /** Arbitrary */
-    int speed = 8;
+    int speed = 2;
 
     /** If no size specified*/
-    TransformComponent() {
+    TransformComponent()
+    {
         position.zero();
     }
 
     /** Custom position */
-    TransformComponent(float x, float y) {
+    TransformComponent(float x, float y)
+    {
         position.x = x;
         position.y = y;
     }
 
-    /** Custom position AND size */
-    TransformComponent(float x, float y, int w, int h, int sc) {
+    /** Custom position AND speed */
+    TransformComponent(float x, float y, int s)
+    {
+        position.x = x;
+        position.y = y;
+        speed = s;
+    }
+
+    /** Custom position AND speed AND size */
+    TransformComponent(float x, float y, int w, int h, int s, int sc)
+    {
         position.x = x;
         position.y = y;
         width = w;
         height = h;
+        speed = s;
         scale = sc;
     }
 
-    void init() override {
+    void init() override
+    {
         velocity.zero();
     }
 
-    void update() override {
+    void update() override
+    {
         position.x += velocity.x * speed;
         position.y += velocity.y * speed;
     }
