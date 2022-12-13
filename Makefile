@@ -1,7 +1,7 @@
 UNAME_S = $(shell uname -s)
 
 CPPFLAGS = --std=c++17 
-LDFLAGS =  -lSDL2 -lSDL2_image  -lm
+LDFLAGS =  -lSDL2 -lSDL2_image -lSDL2_mixer  -lm
 
 # GLFW required frameworks on OSX
 ifeq ($(UNAME_S), Darwin)
@@ -33,7 +33,7 @@ install:
 	cd lib/sdl-mixer && ./configure && make && make install
 
 	cp lib/sdl-image/SDL_image.h lib/sdl/include/SDL_image.h
-	cp lib/sdl-mixer/includes/SDL_mixer.h lib/sdl/include/SDL_mixer.h
+	cp lib/sdl-mixer/include/SDL_mixer.h lib/sdl/include/SDL_mixer.h
 
 build: $(OBJ)
 	clang++ -o $(BIN)/game $^ $(LDFLAGS) -v
