@@ -1,8 +1,11 @@
 #pragma once
 #include "SDL2/SDL.h"
+#include <map>
+
 #include "../ecs.h"
 #include "transform-component.h"
 #include "../texture-manager.h"
+#include "animation-component.h"
 
 class SpriteComponent : public Component {
 private:
@@ -12,12 +15,17 @@ private:
 
     /** Set to true if sprite is animated */
     bool animated = false;
-    int frames = 0;
-
-    /** Delay in ms */
-    int speed = 100;
 
 public:
+    int animationIndex = 0;
+    int frames = 0;
+    int speed = 100;
+
+    /** If sprite is flipped */
+    SDL_RendererFlip spriteFlipped = SDL_FLIP_NONE;
+
+    std::map<const char*, Animation> animations;
+
     SpriteComponent() = default;
 
     SpriteComponent(const char* filepath)
@@ -28,10 +36,16 @@ public:
     SpriteComponent(const char* filepath, int mFrames, int mSpeed)
     {
         animated = true;
-        frames = mFrames;
-        speed = mSpeed;
+        auto idle = Animation(0, mFrames, mSpeed);
+
+        // same file for now
+        animations.emplace("Idle", idle);
+        animations.emplace("Walk", idle);
 
         setTexture(filepath);
+
+        // default animation
+        playAnimation("Idle");
     }
 
     ~SpriteComponent()
@@ -57,6 +71,7 @@ public:
     {
         if (animated) {
             srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+            srcRect.y = animationIndex * transform->height;
         }
 
         destRect.x = static_cast<int>(transform->position.x);
@@ -68,6 +83,13 @@ public:
 
     void render() override
     {
-        TextureManager::render(texture, srcRect, destRect);
+        TextureManager::render(texture, srcRect, destRect, spriteFlipped);
+    }
+
+    void playAnimation(const char* animationName)
+    {
+        animationIndex = animations[animationName].index;
+        frames = animations[animationName].frames;
+        speed = animations[animationName].speed;
     }
 };
