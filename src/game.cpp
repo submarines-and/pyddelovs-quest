@@ -49,7 +49,8 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     Map::generate(width, height);
     for (auto t : Map::tiles) {
         auto& tile(manager.addEntity());
-        tile.addComponent<TileComponent>(t.x, t.y, 32, 32, t.typeId);
+        tile.addComponent<TileComponent>(t.x, t.y, t.typeId);
+        tile.addComponent<TransformComponent>(t.x, t.y, 32, 32, 0, 1);
         tile.addGroup(TERRAIN);
 
         switch (t.typeId) {
@@ -79,7 +80,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     }
 
     if (placed) {
-        player.addComponent<SpriteComponent>("assets/pyddelov-ss.png", 4, 100);
+        player.addComponent<SpriteComponent>("assets/pyddelov.png", 4, 100);
         player.addComponent<KeyboardComponent>();
         player.addComponent<CollisionComponent>("player");
         player.addGroup(PLAYER);

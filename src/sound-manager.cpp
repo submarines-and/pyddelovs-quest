@@ -41,7 +41,7 @@ void SoundManager::playSoundEffect(const char* filepath)
         sound = Mix_LoadWAV(filepath);
 
         if (sound == NULL) {
-            printf("Failed to load high sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+            printf("SDL_mixer Error: %s\n", Mix_GetError());
             return;
         }
 

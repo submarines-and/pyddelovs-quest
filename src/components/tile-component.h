@@ -1,67 +1,50 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include "../ecs.h"
+#include "../texture-manager.h"
 #include "transform-component.h"
-#include "sprite-component.h"
 
 class TileComponent : public Component {
 public:
-    TransformComponent* transform;
-    SpriteComponent* sprite;
-
-    SDL_Rect tileRect;
-    int tileId;
-    const char* filepath;
+    SDL_Texture* texture;
+    SDL_Rect srcRect, destRect;
 
     /** Available tile types */
-    enum TextureType {
-        WATER,
-        ROCK,
+    enum TileType {
         GRASS,
+        ROCK,
+        WATER,
         SAND,
-        SNOW,
+        SNOW
     };
 
     TileComponent() = default;
-    TileComponent(int x, int y, int w, int h, int id)
+    TileComponent(int x, int y, int tileId)
     {
-        tileRect.x = x;
-        tileRect.y = y;
-        tileRect.w = w;
-        tileRect.h = h;
+        // load spritesheet
+        texture = TextureManager::loadTexture("assets/terrain.png");
 
-        tileId = id;
+        srcRect.w = srcRect.h = destRect.w = destRect.h = 32;
 
-        switch (tileId) {
-        default:
-        case WATER:
-            filepath = "assets/water.png";
-            break;
+        int spriteRows = 3;
+        srcRect.y = (tileId / spriteRows) * 32;
+        srcRect.x = (tileId % spriteRows) * 32;
 
-        case ROCK:
-            filepath = "assets/rock.png";
-            break;
 
-        case SAND:
-            filepath = "assets/sand.png";
-            break;
 
-        case GRASS:
-            filepath = "assets/grass.png";
-            break;
 
-        case SNOW:
-            filepath = "assets/snow.png";
-            break;
-        }
+
+        destRect.x = x;
+        destRect.y = y;
     }
 
-    void init() override
+    ~TileComponent()
     {
-        entity->addComponent<TransformComponent>((float)tileRect.x, (float)tileRect.y, (float)tileRect.w, (float)tileRect.h, 0, 1);
-        transform = &entity->getComponent<TransformComponent>();
+        SDL_DestroyTexture(texture);
+    }
 
-        entity->addComponent<SpriteComponent>(filepath);
-        sprite = &entity->getComponent<SpriteComponent>();
+    void render() override
+    {
+        TextureManager::render(texture, srcRect, destRect, SDL_FLIP_NONE);
     }
 };
