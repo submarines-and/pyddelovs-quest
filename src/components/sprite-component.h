@@ -1,9 +1,9 @@
 #pragma once
 #include "SDL2/SDL.h"
 #include <map>
-#include "managers/entity-manager.h"
 #include "transform-component.h"
 #include "animation-component.h"
+#include "managers/entity-manager.h"
 #include "global.h"
 
 class SpriteComponent : public Component {
