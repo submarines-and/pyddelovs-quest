@@ -1,4 +1,4 @@
-#include "map.h"
+#include "level.h"
 #include "components/tile-component.h"
 
 /** Will be populated by the generate function*/
@@ -60,16 +60,16 @@ void Map::generate(int width, int height)
             tile.x = x * mapScale;
             tile.y = y * mapScale;
 
-            if (tileValue < 0.15) {
+            if (tileValue < 0.1) {
                 tile.typeId = TileComponent::SNOW;
             }
-            else if (tileValue < 0.3) {
+            else if (tileValue < 0.2) {
                 tile.typeId = TileComponent::ROCK;
             }
-            else if (tileValue < 0.6) {
+            else if (tileValue < 0.5) {
                 tile.typeId = TileComponent::GRASS;
             }
-            else if (tileValue < 0.65) {
+            else if (tileValue < 0.7) {
                 tile.typeId = TileComponent::SAND;
             }
             else {
