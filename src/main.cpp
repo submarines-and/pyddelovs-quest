@@ -24,10 +24,7 @@ void init(const char* title, int x, int y, int width, int height, bool fullscree
         global.renderer = SDL_CreateRenderer(global.window, -1, 0);
     }
 
-    // set initial camera position
     global.camera = new Camera(width, height);
-
-    // initial map
     global.levelManager.generate(width * 4, height * 4);
 
     // place player in passabel terrain
@@ -65,13 +62,6 @@ void render()
     SDL_RenderPresent(global.renderer);
 }
 
-void clean()
-{
-    SDL_DestroyWindow(global.window);
-    SDL_DestroyRenderer(global.renderer);
-    SDL_Quit();
-}
-
 int main()
 {
     const int fps = 60;
@@ -95,7 +85,9 @@ int main()
         }
     }
 
-    clean();
+    SDL_DestroyWindow(global.window);
+    SDL_DestroyRenderer(global.renderer);
+    SDL_Quit();
 
     return 0;
 }
