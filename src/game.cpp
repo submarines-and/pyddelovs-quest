@@ -33,6 +33,8 @@ Game::~Game() {}
 
 void Game::init(const char* title, int x, int y, int width, int height, bool fullscreen)
 {
+    printf("Starting SDL...\n");
+
     int flags = 0;
     if (fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN;
@@ -52,8 +54,12 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     // set initial camera position
     camera.setPosition(width, height);
 
-    Map::generate(width * 2, height * 2);
+    printf("Generating map...\n");
+    Map::generate(width, height);
+
+    printf("Placing tiles...\n");
     for (auto t : Map::tiles) {
+
         auto& tile(manager.addEntity());
         tile.addComponent<TileComponent>(t.x, t.y, 32, 32, t.typeId);
         tile.addGroup(TERRAIN);
@@ -70,6 +76,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     }
 
     // place player in passabel terrain
+    printf("Add player...");
     for (int i = Map::tiles.size() / 2; i < Map::tiles.size(); i++) {
         auto tile = Map::tiles[i];
 
