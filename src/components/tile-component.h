@@ -58,7 +58,7 @@ public:
 
     void update() override
     {
-        destRect.x = tilePosition.x - Game::camera.x;
-        destRect.y = tilePosition.y - Game::camera.y;
+        destRect.x = tilePosition.x - Game::camera.position.x;
+        destRect.y = tilePosition.y - Game::camera.position.y;
     }
 };

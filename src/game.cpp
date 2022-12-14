@@ -14,9 +14,7 @@ Manager manager;
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 SoundManager soundManager;
-
-SDL_Rect Game::camera;
-SDL_Rect Game::windowSize;
+Camera Game::camera;
 
 std::vector<CollisionComponent*> Game::colliders;
 
@@ -35,9 +33,6 @@ Game::~Game() {}
 
 void Game::init(const char* title, int x, int y, int width, int height, bool fullscreen)
 {
-    windowSize = {0, 0, width, height};
-    camera = {0, 0, width, height};
-
     int flags = 0;
     if (fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN;
@@ -53,6 +48,9 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     else {
         isRunning = false;
     }
+
+    // set initial camera position
+    camera.setPosition(width, height);
 
     Map::generate(width * 2, height * 2);
     for (auto t : Map::tiles) {
@@ -111,6 +109,7 @@ void Game::update()
 
     manager.refresh();
     manager.update();
+    camera.update(player.getComponent<TransformComponent>().position);
 
     // bounce on collision
     if (player.hasComponent<CollisionComponent>()) {
@@ -129,23 +128,6 @@ void Game::update()
                 break;
             }
         }
-    }
-
-    camera.x = player.getComponent<TransformComponent>().position.x - windowSize.w / 2;
-    camera.y = player.getComponent<TransformComponent>().position.y - windowSize.h / 2;
-
-    // check bounds
-    if (camera.x < 0) {
-        camera.x = 0;
-    }
-    if (camera.y < 0) {
-        camera.y = 0;
-    }
-    if (camera.x > camera.w) {
-        camera.x = camera.w;
-    }
-    if (camera.y > camera.h) {
-        camera.y = camera.h;
     }
 }
 
