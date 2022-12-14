@@ -1,5 +1,5 @@
 #pragma once
-#include "util/entity-manager.h"
+#include "managers/entity-manager.h"
 #include "transform-component.h"
 #include "sprite-component.h"
 
@@ -13,6 +13,8 @@ public:
 
     void init() override
     {
+        entity->addGroup(UNIT);
+
         transform = &entity->getComponent<TransformComponent>();
         sprite = &entity->getComponent<SpriteComponent>();
     }

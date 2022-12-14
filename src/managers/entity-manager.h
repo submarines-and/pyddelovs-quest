@@ -49,6 +49,12 @@ public:
     /** Owner*/
     Entity* entity;
 
+    /** Terrain is rendered first*/
+    enum EntityGroup {
+        TERRAIN,
+        UNIT,
+    };
+
     virtual void init() {}
     virtual void update() {}
     virtual void render() {}

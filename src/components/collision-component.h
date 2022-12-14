@@ -2,7 +2,7 @@
 #include "SDL2/SDL.h"
 #include <string>
 
-#include "util/entity-manager.h"
+#include "managers/entity-manager.h"
 #include "transform-component.h"
 #include "global.h"
 

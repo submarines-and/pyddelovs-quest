@@ -1,4 +1,4 @@
-#include "util/entity-manager.h"
+#include "managers/entity-manager.h"
 
 void Entity::addGroup(Group g)
 {

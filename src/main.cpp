@@ -1,5 +1,5 @@
 #include "global.h"
-#include "gfx/texture-manager.h"
+#include "managers/texture-manager.h"
 #include "components/transform-component.h"
 #include "components/sprite-component.h"
 #include "components/keyboard-component.h"
@@ -8,20 +8,13 @@
 #include "level/level.h"
 #include "util/vector2d.h"
 #include "util/camera.h"
-#include "util/entity-manager.h"
+#include "managers/entity-manager.h"
 
 /** Init global state and make accessible for main function. */
 static Global global_instance;
 Global& global = global_instance;
 
-std::vector<CollisionComponent*> colliders;
 auto& player(global.entityManager.addEntity());
-
-enum GroupLabel {
-    TERRAIN,
-    PLAYER,
-    ENEMY
-};
 
 void init(const char* title, int x, int y, int width, int height, bool fullscreen)
 {
@@ -35,22 +28,19 @@ void init(const char* title, int x, int y, int width, int height, bool fullscree
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
         global.window = SDL_CreateWindow(title, x, y, width, height, flags);
         global.renderer = SDL_CreateRenderer(global.window, -1, 0);
-
-        SDL_SetRenderDrawColor(global.renderer, 255, 255, 255, 255);
     }
 
     // set initial camera position
     global.camera = new Camera(width, height);
 
     printf("Generating map...\n");
-    Map::generate(width, height);
+    Map::generate(width * 4, height * 4);
 
     printf("Placing tiles...\n");
     for (auto t : Map::tiles) {
 
         auto& tile(global.entityManager.addEntity());
         tile.addComponent<TileComponent>(t.x, t.y, 32, 32, t.typeId);
-        tile.addGroup(TERRAIN);
 
         switch (t.typeId) {
         case TileComponent::ROCK:
@@ -69,7 +59,6 @@ void init(const char* title, int x, int y, int width, int height, bool fullscree
     player.addComponent<SpriteComponent>("assets/pyddelov.png", 4, 100);
     player.addComponent<KeyboardComponent>();
     player.addComponent<CollisionComponent>("player");
-    player.addGroup(PLAYER);
 
     // start music
     global.soundManager.playMusic("sound/music/forest.mp3");
@@ -83,36 +72,17 @@ void update()
     global.entityManager.refresh();
     global.entityManager.update();
     global.camera->update(player.getComponent<TransformComponent>().position);
-
-    // bounce on collision
-    if (player.hasComponent<CollisionComponent>()) {
-        auto playerCollision = player.getComponent<CollisionComponent>();
-
-        for (auto c : colliders) {
-
-            // player cant collide with self
-            if (playerCollision.tag == c->tag) {
-                continue;
-            }
-
-            if (SDL_HasIntersection(&playerCollision.collider, &c->collider)) {
-                //     global.soundManager.playSoundEffect("sound/character/bounce.wav");
-                player.getComponent<TransformComponent>().position = playerTransform.position;
-                break;
-            }
-        }
-    }
 }
 
 void render()
 {
     SDL_RenderClear(global.renderer);
 
-    for (auto& o : global.entityManager.getGroup(TERRAIN)) {
+    for (auto& o : global.entityManager.getGroup(0)) {
         o->render();
     }
 
-    for (auto& o : global.entityManager.getGroup(PLAYER)) {
+    for (auto& o : global.entityManager.getGroup(1)) {
         o->render();
     }
 
