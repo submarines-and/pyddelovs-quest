@@ -1,10 +1,12 @@
 #pragma once
-#include "../ecs.h"
-#include "../game.h"
+#include "util/entity-manager.h"
 #include "transform-component.h"
 #include "sprite-component.h"
 
 class KeyboardComponent : public Component {
+private:
+    SDL_Event event;
+
 public:
     TransformComponent* transform;
     SpriteComponent* sprite;
@@ -18,8 +20,10 @@ public:
     /** Check for keypress */
     void update() override
     {
-        if (Game::event.type == SDL_KEYDOWN) {
-            switch (Game::event.key.keysym.sym) {
+        SDL_PollEvent(&event);
+
+        if (event.type == SDL_KEYDOWN) {
+            switch (event.key.keysym.sym) {
             case SDLK_w:
             case SDLK_UP:
                 transform->velocity.y = -1;
@@ -51,8 +55,8 @@ public:
             }
         }
 
-        if (Game::event.type == SDL_KEYUP) {
-            switch (Game::event.key.keysym.sym) {
+        if (event.type == SDL_KEYUP) {
+            switch (event.key.keysym.sym) {
             case SDLK_w:
             case SDLK_UP:
             case SDLK_s:

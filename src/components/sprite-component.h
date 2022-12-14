@@ -1,11 +1,11 @@
 #pragma once
 #include "SDL2/SDL.h"
 #include <map>
-
-#include "../ecs.h"
+#include "util/entity-manager.h"
 #include "transform-component.h"
-#include "../texture-manager.h"
+#include "gfx/texture-manager.h"
 #include "animation-component.h"
+#include "global.h"
 
 class SpriteComponent : public Component {
 private:
@@ -74,8 +74,8 @@ public:
             srcRect.y = animationIndex * transform->height;
         }
 
-        destRect.x = static_cast<int>(transform->position.x) - Game::camera.position.x;
-        destRect.y = static_cast<int>(transform->position.y) - Game::camera.position.y;
+        destRect.x = static_cast<int>(transform->position.x) - global.camera->position.x;
+        destRect.y = static_cast<int>(transform->position.y) - global.camera->position.y;
 
         destRect.w = transform->width;
         destRect.h = transform->height;

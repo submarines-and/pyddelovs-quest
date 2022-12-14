@@ -1,6 +1,6 @@
 UNAME_S = $(shell uname -s)
 
-CPPFLAGS = --std=c++17 
+CPPFLAGS = -I./src --std=c++17 
 LDFLAGS =  -lSDL2 -lSDL2_image -lSDL2_mixer
 
 # GLFW required frameworks on OSX
@@ -12,7 +12,7 @@ ifeq ($(UNAME_S), Linux)
 	LDFLAGS += -ldl -lpthread
 endif
 
-SRC  = $(wildcard src/**/*.cpp) $(wildcard src/*.cpp) $(wildcard src/**/**/*.cpp) $(wildcard src/**/**/**/*.cpp)
+SRC  = $(wildcard src/*.cpp) $(wildcard src/**/*.cpp)  $(wildcard src/**/**/*.cpp) $(wildcard src/**/**/**/*.cpp) 
 OBJ  = $(SRC:.cpp=.o)
 BIN = bin
 
@@ -36,6 +36,7 @@ install:
 	cp lib/sdl-mixer/include/SDL_mixer.h lib/sdl/include/SDL_mixer.h
 
 build: $(OBJ)
+	echo " $(OBJ)"
 	clang++ -o $(BIN)/game $^ $(LDFLAGS) -v
 
 start: clean dirs build

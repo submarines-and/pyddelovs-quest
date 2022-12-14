@@ -1,8 +1,9 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include "../ecs.h"
-#include "../texture-manager.h"
+#include "util/entity-manager.h"
+#include "gfx/texture-manager.h"
 #include "transform-component.h"
+#include "global.h"
 
 class TileComponent : public Component {
 public:
@@ -58,7 +59,7 @@ public:
 
     void update() override
     {
-        destRect.x = tilePosition.x - Game::camera.position.x;
-        destRect.y = tilePosition.y - Game::camera.position.y;
+        destRect.x = tilePosition.x - global.camera->position.x;
+        destRect.y = tilePosition.y - global.camera->position.y;
     }
 };

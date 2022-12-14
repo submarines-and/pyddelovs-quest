@@ -1,10 +1,10 @@
 #pragma once
-#include <string>
 #include "SDL2/SDL.h"
+#include <string>
 
-#include "../ecs.h"
+#include "util/entity-manager.h"
 #include "transform-component.h"
-#include "../game.h"
+#include "global.h"
 
 /** Handes collision*/
 class CollisionComponent : public Component {
@@ -36,7 +36,7 @@ public:
         transform = &entity->getComponent<TransformComponent>();
 
         // add to game, move to system??
-        Game::colliders.push_back(this);
+     //   Game::colliders.push_back(this);
     }
 
     /** Update collider box size every frame*/
