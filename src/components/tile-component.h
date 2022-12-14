@@ -1,7 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include "util/entity-manager.h"
-#include "gfx/texture-manager.h"
 #include "transform-component.h"
 #include "global.h"
 
@@ -25,7 +24,7 @@ public:
     {
 
         // load spritesheet
-        texture = TextureManager::loadTexture("assets/terrain.png");
+        texture = global.textureManager.loadTexture("assets/terrain.png");
 
         // sprite sheets are always 32x32
         srcRect.w = srcRect.h = 32;
@@ -54,7 +53,7 @@ public:
 
     void render() override
     {
-        TextureManager::render(texture, srcRect, destRect, SDL_FLIP_NONE);
+        global.textureManager.render(texture, srcRect, destRect, SDL_FLIP_NONE);
     }
 
     void update() override

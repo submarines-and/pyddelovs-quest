@@ -3,6 +3,7 @@
 #include "util/camera.h"
 #include "util/sound-manager.h"
 #include "util/entity-manager.h"
+#include "gfx/texture-manager.h"
 
 /** All globally available objects */
 struct Global {
@@ -10,8 +11,10 @@ struct Global {
     SDL_Renderer* renderer;
 
     Camera* camera;
+
+    EntityManager entityManager;
     SoundManager soundManager;
-    EntityManager manager;
+    TextureManager textureManager;
 };
 
 extern Global& global;

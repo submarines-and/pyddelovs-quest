@@ -15,7 +15,7 @@ static Global global_instance;
 Global &global = global_instance;
 
 std::vector<CollisionComponent*> colliders;
-auto& player(global.manager.addEntity());
+auto& player(global.entityManager.addEntity());
 
 enum GroupLabel {
     TERRAIN,
@@ -49,7 +49,7 @@ void init(const char* title, int x, int y, int width, int height, bool fullscree
     printf("Placing tiles...\n");
     for (auto t : Map::tiles) {
 
-        auto& tile(global.manager.addEntity());
+        auto& tile(global.entityManager.addEntity());
         tile.addComponent<TileComponent>(t.x, t.y, 32, 32, t.typeId);
         tile.addGroup(TERRAIN);
 
@@ -89,8 +89,8 @@ void update()
     // position before updates
     auto playerTransform = player.getComponent<TransformComponent>();
 
-    global.manager.refresh();
-    global.manager.update();
+    global.entityManager.refresh();
+    global.entityManager.update();
     global.camera->update(player.getComponent<TransformComponent>().position);
 
     // bounce on collision
@@ -117,11 +117,11 @@ void render()
 {
     SDL_RenderClear(global.renderer);
 
-    for (auto& o : global.manager.getGroup(TERRAIN)) {
+    for (auto& o : global.entityManager.getGroup(TERRAIN)) {
         o->render();
     }
 
-    for (auto& o : global.manager.getGroup(PLAYER)) {
+    for (auto& o : global.entityManager.getGroup(PLAYER)) {
         o->render();
     }
 
