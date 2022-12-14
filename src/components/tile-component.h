@@ -8,6 +8,7 @@ class TileComponent : public Component {
 public:
     SDL_Texture* texture;
     SDL_Rect srcRect, destRect;
+    Vector2d tilePosition;
 
     /** Available tile types */
     enum TileType {
@@ -19,23 +20,23 @@ public:
     };
 
     TileComponent() = default;
-    TileComponent(int x, int y, int tileId)
+    TileComponent(int x, int y, int w, int h, int tileId)
     {
+
         // load spritesheet
         texture = TextureManager::loadTexture("assets/terrain.png");
 
-        srcRect.w = srcRect.h = destRect.w = destRect.h = 32;
+        // sprite sheets are always 32x32
+        srcRect.w = srcRect.h = 32;
 
         int spriteRows = 3;
-        srcRect.y = (tileId / spriteRows) * 32;
-        srcRect.x = (tileId % spriteRows) * 32;
+        srcRect.x = (tileId % spriteRows) * w;
+        srcRect.y = (tileId / spriteRows) * h;
 
-
-
-
-
-        destRect.x = x;
-        destRect.y = y;
+        destRect.w = w;
+        destRect.h = h;
+        destRect.x = tilePosition.x = x;
+        destRect.y = tilePosition.y = y;
     }
 
     ~TileComponent()
@@ -43,8 +44,21 @@ public:
         SDL_DestroyTexture(texture);
     }
 
+    void init() override
+    {
+        if (!entity->hasComponent<TransformComponent>()) {
+            entity->addComponent<TransformComponent>(destRect.x, destRect.y, destRect.w, destRect.h, 0);
+        }
+    }
+
     void render() override
     {
         TextureManager::render(texture, srcRect, destRect, SDL_FLIP_NONE);
+    }
+
+    void update() override
+    {
+        destRect.x = tilePosition.x - Game::camera.x;
+        destRect.y = tilePosition.y - Game::camera.y;
     }
 };
