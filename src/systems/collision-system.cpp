@@ -19,7 +19,7 @@ void CollisionSystem::update()
                 }
 
                 if (SDL_HasIntersection(&playerCollision.collider, &c->collider)) {
-                    //     global.soundManager.playSoundEffect("sound/character/bounce.wav");
+                    //     global.sound.playSoundEffect("sound/character/bounce.wav");
                     player.getComponent<TransformComponent>().position = playerTransform.position;
                     break;
                 }

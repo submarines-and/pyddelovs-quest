@@ -1,11 +1,11 @@
 #include "sound.h"
 
-SoundManager::SoundManager()
+Sound::Sound()
 {
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 }
 
-SoundManager::~SoundManager()
+Sound::~Sound()
 {
     Mix_HaltMusic();
     Mix_FreeMusic(music);
@@ -18,7 +18,7 @@ SoundManager::~SoundManager()
 }
 
 /** Play music at given filepath */
-void SoundManager::playMusic(const char* filepath)
+void Sound::playMusic(const char* filepath)
 {
     if (Mix_PlayingMusic() != 0) {
         return;
@@ -29,7 +29,7 @@ void SoundManager::playMusic(const char* filepath)
 }
 
 /** Plays a sound effect*/
-void SoundManager::playSoundEffect(const char* filepath)
+void Sound::playSoundEffect(const char* filepath)
 {
     Mix_Chunk* sound;
 
