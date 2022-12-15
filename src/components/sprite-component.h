@@ -2,8 +2,8 @@
 #include <SDL2/SDL.h>
 #include <map>
 #include "transform-component.h"
-#include "animation-component.h"
-#include "managers/entity-manager.h"
+#include "gfx/animation.h"
+#include "character/entity.h"
 
 class SpriteComponent : public Component {
 private:

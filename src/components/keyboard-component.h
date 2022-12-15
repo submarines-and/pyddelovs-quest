@@ -1,5 +1,5 @@
 #pragma once
-#include "managers/entity-manager.h"
+#include "character/entity.h"
 #include "transform-component.h"
 #include "sprite-component.h"
 

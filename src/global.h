@@ -2,9 +2,9 @@
 #include <SDL2/SDL.h>
 #include "util/camera.h"
 #include "util/sound.h"
-#include "managers/entity-manager.h"
-#include "managers/level-manager.h"
-#include "managers/texture-manager.h"
+#include "character/entity.h"
+#include "util/level.h"
+#include "gfx/textures.h"
 
 /** All globally available objects */
 struct Global {
@@ -14,9 +14,9 @@ struct Global {
     Camera* camera;
 
     EntityManager entityManager;
-    LevelManager levelManager;
+    Level level;
     SoundManager soundManager;
-    TextureManager textureManager;
+    Textures textures;
 };
 
 /** Will be created by main.cpp */

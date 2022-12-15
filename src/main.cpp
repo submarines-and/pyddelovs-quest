@@ -25,7 +25,7 @@ void init(const char* title, int x, int y, int width, int height, bool fullscree
     }
 
     global.camera = new Camera(width, height);
-    global.levelManager.generate(width * 4, height * 4);
+    global.level.generate(width * 4, height * 4);
 
     // place player in passabel terrain
     player.addComponent<TransformComponent>(width / 2, height / 2);

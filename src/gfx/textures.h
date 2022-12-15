@@ -3,7 +3,7 @@
 #include <SDL2/SDL_image.h>
 #include <map>
 
-class TextureManager {
+class Textures {
 private:
     std::map<const char*, SDL_Texture*> textures;
 
