@@ -1,8 +1,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include "managers/entity-manager.h"
-#include "transform-component.h"
-#include "global.h"
+#include "util/vector2d.h"
 
 class TileComponent : public Component {
 public:
@@ -20,47 +19,10 @@ public:
     };
 
     TileComponent() = default;
-    TileComponent(int x, int y, int w, int h, int tileId)
-    {
+    TileComponent(int x, int y, int w, int h, int tileId);
+    ~TileComponent();
 
-        // load spritesheet
-        texture = global.textureManager.loadTexture("assets/terrain.png");
-
-        // sprite sheets are always 32x32
-        srcRect.w = srcRect.h = 32;
-
-        int spriteRows = 3;
-        srcRect.x = (tileId % spriteRows) * w;
-        srcRect.y = (tileId / spriteRows) * h;
-
-        destRect.w = w;
-        destRect.h = h;
-        destRect.x = tilePosition.x = x;
-        destRect.y = tilePosition.y = y;
-    }
-
-    ~TileComponent()
-    {
-        SDL_DestroyTexture(texture);
-    }
-
-    void init() override
-    {
-        entity->addGroup(TERRAIN);
-
-        if (!entity->hasComponent<TransformComponent>()) {
-            entity->addComponent<TransformComponent>(destRect.x, destRect.y, destRect.w, destRect.h, 0);
-        }
-    }
-
-    void render() override
-    {
-        global.textureManager.render(texture, srcRect, destRect, SDL_FLIP_NONE);
-    }
-
-    void update() override
-    {
-        destRect.x = tilePosition.x - global.camera->position.x;
-        destRect.y = tilePosition.y - global.camera->position.y;
-    }
+    void init() override;
+    void render() override;
+    void update() override;
 };
