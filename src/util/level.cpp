@@ -6,7 +6,7 @@
 /** Generate noise map with tiles */
 std::vector<TilePlacement> Level::generateTiles(int width, int height)
 {
-    int octaves = 4;
+    int octaves = 6;
     int mapScale = 32;
 
     width /= mapScale;

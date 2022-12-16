@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <string>
-#include "character/entity.h"
+#include "component.h"
 #include "transform-component.h"
 
 

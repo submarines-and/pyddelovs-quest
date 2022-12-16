@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include "util/camera.h"
 #include "util/sound.h"
-#include "character/entity.h"
+#include "entity/entity.h"
 #include "util/level.h"
 #include "gfx/textures.h"
 #include "systems/collision.h"

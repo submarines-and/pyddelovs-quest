@@ -28,8 +28,6 @@ TileComponent::~TileComponent()
 
 void TileComponent::init()
 {
-    entity->addGroup(TERRAIN);
-
     if (!entity->hasComponent<TransformComponent>()) {
         entity->addComponent<TransformComponent>(destRect.x, destRect.y, destRect.w, destRect.h, 0);
     }

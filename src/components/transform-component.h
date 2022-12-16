@@ -1,5 +1,5 @@
 #pragma once
-#include "character/entity.h"
+#include "component.h"
 #include "util/vector2d.h"
 
 class TransformComponent : public Component {
