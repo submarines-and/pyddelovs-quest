@@ -13,7 +13,8 @@ std::vector<TilePlacement> Level::generateTiles(int width, int height)
     height /= mapScale;
 
     srand((unsigned int)time(NULL));
-    float* seed = new float[width * height];
+
+    float* seed = new float[width * height * 345354 * 345345];
     for (int i = 0; i < width * height; i++) {
         seed[i] = (float)rand() / (float)RAND_MAX;
     }

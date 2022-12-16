@@ -8,10 +8,11 @@
 /** Handes collision*/
 class CollisionComponent : public Component {
 private:
-    SDL_Rect collider;
     TransformComponent* transform;
 
 public:
+    SDL_Rect collider;
+
     void init() override;
     void update() override;
 };

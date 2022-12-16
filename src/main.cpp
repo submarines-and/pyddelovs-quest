@@ -2,6 +2,7 @@
 #include "util/camera.h"
 #include "character/pyddelov.h"
 #include "components/transform-component.h"
+#include "systems/collision.h"
 
 /** Init global state and make accessible for main function. */
 static Global global_instance;
@@ -20,20 +21,25 @@ void init(const char* title, int x, int y, int width, int height, bool fullscree
     }
 
     global.camera = new Camera(width, height);
+
+    global.collision = new Collision();
+
     global.level.generate(width * 4, height * 4);
 
     // create player and place in the moddle
     global.pyddelov = Pyddelov::createPyddelov(width / 2, height / 2);
 
     // start music
-    global.sound.playMusic("sound/music/forest.mp3");
+    //  global.sound.playMusic("sound/music/forest.mp3");
 }
 
 void update()
 {
+    auto playerPosition = global.pyddelov->getComponent<TransformComponent>().position;
 
     global.entityManager.refresh();
     global.entityManager.update();
+    global.collision->update(playerPosition);
     global.camera->update(global.pyddelov->getComponent<TransformComponent>().position);
 }
 
