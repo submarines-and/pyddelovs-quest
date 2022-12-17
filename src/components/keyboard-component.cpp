@@ -1,5 +1,5 @@
 #include "keyboard-component.h"
-#include "entity/entity.h"
+#include "entities/entity.h"
 
 void KeyboardComponent::init()
 {
