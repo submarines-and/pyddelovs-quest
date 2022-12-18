@@ -18,11 +18,16 @@ private:
         ROCK,
         SNOW,
         TREE,
-        FLOWER,
     };
 
-public:
+    enum Teasures {
+        SEASHELL,
+    };
+
     void generateTiles(int width, int height);
     void placeTiles();
+
+public:
+    Level(int width, int height);
     TilePlacement getFreeTile(int startX, int startY);
 };
