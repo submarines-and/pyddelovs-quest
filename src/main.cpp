@@ -1,8 +1,16 @@
 #include "global.h"
-#include "util/camera.h"
-#include "entities/pyddelov.h"
-#include "components/transform-component.h"
-#include "systems/collision.h"
+
+#include "components/collision.h"
+#include "components/player.h"
+#include "components/transform.h"
+#include "components/sprite.h"
+
+#include "systems/collision-system.h"
+#include "systems/keyboard-system.h"
+#include "systems/sprite-system.h"
+#include "systems/transform-system.h"
+
+#include "util/level.h"
 
 /** Init global state and make accessible for main function. */
 static Global global_instance;
@@ -10,65 +18,96 @@ Global& global = global_instance;
 
 void init(const char* title, int x, int y, int width, int height, bool fullscreen)
 {
-    int flags = 0;
-    if (fullscreen) {
-        flags = SDL_WINDOW_FULLSCREEN;
-    }
-
-    if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
-        global.window = SDL_CreateWindow(title, x, y, width, height, flags);
-        global.renderer = SDL_CreateRenderer(global.window, -1, 0);
-    }
-
-    global.camera = new Camera(width, height);
-
-    global.collision = new Collision();
-
-    global.level.generate(width * 4, height * 4);
-
-    // create player and place in the moddle
-    global.pyddelov = Pyddelov::createPyddelov(width / 2, height / 2);
-
-    // start music
-    //  global.sound.playMusic("sound/music/forest.mp3");
-}
-
-void update()
-{
-    auto playerPosition = global.pyddelov->getComponent<TransformComponent>().position;
-
-    global.entityManager.update();
-    global.collision->update(playerPosition);
-    global.camera->update(global.pyddelov->getComponent<TransformComponent>().position);
-}
-
-void render()
-{
-    SDL_RenderClear(global.renderer);
-
-    for (auto o : global.entityManager.entities) {
-        o->render();
-    }
-
-
-    SDL_RenderPresent(global.renderer);
 }
 
 int main()
 {
     const int fps = 60;
     const int frameDelay = 1000 / fps;
+    const int width = 1280;
+    const int height = 1280;
 
     Uint32 frameStart;
     int frameTime;
 
-    init("Pyddelovs Quest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 1280, false);
+    if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
+        global.window = SDL_CreateWindow("Pyddelovs Quest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
+        global.renderer = SDL_CreateRenderer(global.window, -1, 0);
+    }
 
+    global.ecs = new ECS();
+    global.ecs->init();
+
+    // register all components
+    global.ecs->registerComponent<Player>();
+    global.ecs->registerComponent<Transform>();
+    global.ecs->registerComponent<Sprite>();
+    global.ecs->registerComponent<Collision>();
+
+    auto spriteSystem = global.ecs->registerSystem<SpriteSystem>();
+    {
+        Signature signature;
+        signature.set(global.ecs->getComponentType<Sprite>());
+        signature.set(global.ecs->getComponentType<Transform>());
+        global.ecs->setSystemSignature<SpriteSystem>(signature);
+    }
+
+    auto transformSystem = global.ecs->registerSystem<TransformSystem>();
+    {
+        Signature signature;
+        signature.set(global.ecs->getComponentType<Transform>());
+        global.ecs->setSystemSignature<TransformSystem>(signature);
+    }
+    transformSystem->init(width, height);
+
+    auto collisionSystem = global.ecs->registerSystem<CollisionSystem>();
+    {
+        Signature signature;
+        signature.set(global.ecs->getComponentType<Collision>());
+        global.ecs->setSystemSignature<CollisionSystem>(signature);
+    }
+
+    auto keyboardSystem = global.ecs->registerSystem<KeyboardSystem>();
+    {
+        Signature signature;
+        signature.set(global.ecs->getComponentType<Player>());
+        signature.set(global.ecs->getComponentType<Transform>());
+        global.ecs->setSystemSignature<KeyboardSystem>(signature);
+    }
+
+    // create level
+    Level level;
+    auto tiles = level.generateTiles(width * 2, height * 2);
+    level.placeTiles(tiles);
+
+    // create pyddelov
+    auto player = global.ecs->createEntity();
+    global.ecs->addComponent(player, Player{});
+    global.ecs->addComponent(player, Transform{
+                                         .position = Vector2d(width / 2, height / 2),
+                                         .speed = 2,
+                                     });
+    global.ecs->addComponent(player, Sprite{
+                                         .filepath = "assets/pyddelov.png",
+                                         .src = {
+                                             .x = 0,
+                                             .y = 0,
+                                             .h = 32,
+                                             .w = 32,
+                                         },
+                                         .frames = 3,
+                                     });
+
+    // main loop
     while (!SDL_QuitRequested()) {
         frameStart = SDL_GetTicks();
 
-        update();
-        render();
+        auto playerPositionBeforeUpdates = global.ecs->getComponent<Transform>(player).position;
+
+        keyboardSystem->update();
+        transformSystem->update(playerPositionBeforeUpdates);
+        collisionSystem->update(player, playerPositionBeforeUpdates);
+        spriteSystem->update();
 
         frameTime = SDL_GetTicks() - frameStart;
 

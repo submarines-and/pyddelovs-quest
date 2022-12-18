@@ -1,24 +1,26 @@
+#include "components/collision.h"
+#include "components/transform.h"
+#include "components/sprite.h"
+
 #include "level.h"
-#include "components/tile-component.h"
-#include "components/collision-component.h"
 #include "global.h"
 
 /** Generate noise map with tiles */
 std::vector<TilePlacement> Level::generateTiles(int width, int height)
 {
-    int octaves = 6;
+    int octaves = 5;
     int mapScale = 32;
+    std::vector<TilePlacement> tiles;
 
     width /= mapScale;
     height /= mapScale;
 
     srand((unsigned int)time(NULL));
 
-    float* seed = new float[width * height * 34354 * 11633];
+    float* seed = new float[width * height];
     for (int i = 0; i < width * height; i++) {
         seed[i] = (float)rand() / (float)RAND_MAX;
     }
-
     float* perlinNoise = new float[width * height];
 
     // generate noise
@@ -51,8 +53,6 @@ std::vector<TilePlacement> Level::generateTiles(int width, int height)
         }
     }
 
-    std::vector<TilePlacement> tiles;
-
     // map to tiles
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
@@ -63,25 +63,25 @@ std::vector<TilePlacement> Level::generateTiles(int width, int height)
             tile.y = y * mapScale;
 
             if (tileValue < 0.1) {
-                tile.typeId = TileComponent::SNOW;
+                tile.typeId = SNOW;
             }
             else if (tileValue < 0.27) {
-                tile.typeId = TileComponent::ROCK;
+                tile.typeId = ROCK;
             }
             else if (tileValue < 0.56) {
-                tile.typeId = TileComponent::GRASS;
+                tile.typeId = GRASS;
             }
             else if (tileValue < 0.58) {
-                tile.typeId = TileComponent::FLOWER;
+                tile.typeId = FLOWER;
             }
             else if (tileValue < 0.6) {
-                tile.typeId = TileComponent::TREE;
+                tile.typeId = TREE;
             }
             else if (tileValue < 0.7) {
-                tile.typeId = TileComponent::SAND;
+                tile.typeId = SAND;
             }
             else {
-                tile.typeId = TileComponent::WATER;
+                tile.typeId = WATER;
             }
 
             tiles.push_back(tile);
@@ -96,23 +96,32 @@ void Level::placeTiles(std::vector<TilePlacement> tiles)
 {
     for (auto t : tiles) {
 
-        auto& tile(global.entityManager.addEntity());
-        tile.addComponent<TileComponent>(t.x, t.y, 32, 32, t.typeId);
+        // int spriteRows = 3;
+        // srcRect.x = (tileId % spriteRows) * w;
+        // srcRect.y = (tileId / spriteRows) * h;
+        SDL_Rect src{
+            .x = t.typeId * 32,
+            .y = 0,
+            .h = 32,
+            .w = 32,
+        };
+
+        auto tile = global.ecs->createEntity();
+        global.ecs->addComponent(tile, Transform{.position = Vector2d(t.x, t.y)});
+        global.ecs->addComponent(tile, Sprite{
+                                           .filepath = "assets/terrain.png",
+                                           .src = src,
+                                       });
 
         switch (t.typeId) {
-        case TileComponent::ROCK:
-        case TileComponent::WATER:
-            tile.addComponent<CollisionComponent>();
+        case ROCK:
+        case WATER:
+        case TREE:
+            global.ecs->addComponent(tile, Collision{});
             break;
 
         default:
             break;
         }
     }
-}
-
-void Level::generate(int width, int height)
-{
-    auto tiles = generateTiles(width, height);
-    placeTiles(tiles);
 }
