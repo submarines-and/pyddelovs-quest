@@ -39,13 +39,12 @@ void Sound::playSoundEffect(const char* filepath)
     }
     else {
         sound = Mix_LoadWAV(filepath);
-
-        if (sound == NULL) {
-            printf("SDL_mixer Error: %s\n", Mix_GetError());
-            return;
-        }
-
         sounds.emplace(filepath, sound);
+    }
+
+    if (sound == NULL) {
+        printf("Sound not found %s %s\n", filepath, Mix_GetError());
+        return;
     }
 
     // play
