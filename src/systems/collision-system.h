@@ -7,7 +7,7 @@
 
 class CollisionSystem : public System {
 public:
-    void update(Entity player, Transform playerTransformBeforeUpdates)
+    void update(Entity player, Transform playerTransformBeforeUpdates, float deltaTime)
     {
         auto& playerTransform = global.ecs->getComponent<Transform>(player);
 
@@ -17,8 +17,8 @@ public:
             if (Transform::isOverlapping(playerTransform, transform)) {
                 // global.sound.playSoundEffect("sound/character/bounce.wav");
 
-                playerTransform.position.x -= playerTransform.velocity.x * playerTransform.speed;
-                playerTransform.position.y -= playerTransform.velocity.y * playerTransform.speed;
+                playerTransform.position.x -= playerTransform.direction.x * deltaTime * playerTransform.speed;
+                playerTransform.position.y -= playerTransform.direction.y * deltaTime * playerTransform.speed;
                 break;
             }
         }

@@ -23,24 +23,24 @@ public:
                 switch (event.key.keysym.sym) {
                 case SDLK_w:
                 case SDLK_UP:
-                    transform.velocity.y = -1;
+                    transform.direction.y = -1;
                     sprite.flip = SDL_FLIP_VERTICAL;
                     break;
 
                 case SDLK_s:
                 case SDLK_DOWN:
-                    transform.velocity.y = 1;
+                    transform.direction.y = 1;
                     break;
 
                 case SDLK_a:
                 case SDLK_LEFT:
-                    transform.velocity.x = -1;
+                    transform.direction.x = -1;
                     sprite.flip = SDL_FLIP_HORIZONTAL;
                     break;
 
                 case SDLK_d:
                 case SDLK_RIGHT:
-                    transform.velocity.x = 1;
+                    transform.direction.x = 1;
                     break;
 
                 default:
@@ -54,7 +54,7 @@ public:
                 case SDLK_UP:
                 case SDLK_s:
                 case SDLK_DOWN:
-                    transform.velocity.y = 0;
+                    transform.direction.y = 0;
                     sprite.flip = SDL_FLIP_NONE;
                     break;
 
@@ -63,7 +63,7 @@ public:
 
                 case SDLK_d:
                 case SDLK_RIGHT:
-                    transform.velocity.x = 0;
+                    transform.direction.x = 0;
                     sprite.flip = SDL_FLIP_NONE;
                     break;
 
