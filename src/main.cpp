@@ -103,11 +103,11 @@ int main()
     while (!SDL_QuitRequested()) {
         frameStart = SDL_GetTicks();
 
-        auto playerPositionBeforeUpdates = global.ecs->getComponent<Transform>(player).position;
+        auto playerTransform = global.ecs->getComponent<Transform>(player);
 
         keyboardSystem->update();
-        transformSystem->update(playerPositionBeforeUpdates);
-        collisionSystem->update(player, playerPositionBeforeUpdates);
+        transformSystem->update(playerTransform.position);
+        collisionSystem->update(player, playerTransform);
         spriteSystem->update();
 
         frameTime = SDL_GetTicks() - frameStart;
