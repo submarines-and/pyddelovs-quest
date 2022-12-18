@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 
-
 struct TilePlacement {
     int x;
     int y;
@@ -10,7 +9,8 @@ struct TilePlacement {
 
 class Level {
 private:
-    /** Available tile types */
+    std::vector<TilePlacement> tiles;
+
     enum TileType {
         GRASS,
         WATER,
@@ -22,7 +22,7 @@ private:
     };
 
 public:
-    std::vector<TilePlacement> generateTiles(int width, int height);
-    void placeTiles(std::vector<TilePlacement> tiles);
-
+    void generateTiles(int width, int height);
+    void placeTiles();
+    TilePlacement getFreeTile(int startX, int startY);
 };

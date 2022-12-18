@@ -6,11 +6,10 @@
 #include "global.h"
 
 /** Generate noise map with tiles */
-std::vector<TilePlacement> Level::generateTiles(int width, int height)
+void Level::generateTiles(int width, int height)
 {
     int octaves = 5;
     int mapScale = 32;
-    std::vector<TilePlacement> tiles;
 
     width /= mapScale;
     height /= mapScale;
@@ -54,6 +53,7 @@ std::vector<TilePlacement> Level::generateTiles(int width, int height)
     }
 
     // map to tiles
+
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
             float tileValue = perlinNoise[y * width + x];
@@ -87,12 +87,10 @@ std::vector<TilePlacement> Level::generateTiles(int width, int height)
             tiles.push_back(tile);
         }
     }
-
-    return tiles;
 }
 
 /** Place maps in world */
-void Level::placeTiles(std::vector<TilePlacement> tiles)
+void Level::placeTiles()
 {
     for (auto t : tiles) {
 
@@ -124,4 +122,27 @@ void Level::placeTiles(std::vector<TilePlacement> tiles)
             break;
         }
     }
+}
+
+TilePlacement Level::getFreeTile(int startX, int startY)
+{
+    for (auto t : tiles) {
+
+        if (t.x < startX || t.y < startY) {
+            continue;
+        }
+
+        switch (t.typeId) {
+        case ROCK:
+        case WATER:
+        case TREE:
+            break;
+
+            // first free tile
+        default:
+            return t;
+        }
+    }
+
+    return tiles[0];
 }

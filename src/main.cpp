@@ -77,14 +77,15 @@ int main()
 
     // create level
     Level level;
-    auto tiles = level.generateTiles(width * 2, height * 2);
-    level.placeTiles(tiles);
+    level.generateTiles(width * 2, height * 2);
+    level.placeTiles();
+    auto freeTile = level.getFreeTile(width / 2, height / 2);
 
     // create pyddelov
     auto player = global.ecs->createEntity();
     global.ecs->addComponent(player, Player{});
     global.ecs->addComponent(player, Transform{
-                                         .position = Vector2d(width / 2, height / 2),
+                                         .position = Vector2d(freeTile.x, freeTile.y),
                                          .speed = 2,
                                      });
     global.ecs->addComponent(player, Sprite{
