@@ -144,5 +144,5 @@ TilePlacement Level::getFreeTile(int startX, int startY)
         }
     }
 
-    return tiles[0];
+    return tiles.at(tiles.size() / 2);
 }
