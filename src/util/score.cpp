@@ -13,18 +13,23 @@ void Score::pickupTreasure(int treasure)
     case Level::FLOWER:
     case Level::BREAD:
     default:
-        score += 20;
+        score += 1;
         break;
     }
 
-    // spawn krabban klo every 100 points
-    if (score % 100 == 0) {
+    // spawn krabban klo every X points
+    if (score % 3 == 0) {
+        auto modifier = (score / 10) % 2 == 0;
+        auto x = modifier ? 0 : 2000;
+        ;
+        auto y = modifier ? 0 : 2000;
+        ;
 
         auto krabbanKlo = global.ecs->createEntity();
         global.ecs->addComponent(krabbanKlo, AI{});
         global.ecs->addComponent(krabbanKlo, Transform{
-                                                 .position = Vector2d(0, 0),
-                                                 .speed = 100,
+                                                 .position = Vector2d(x, y),
+                                                 .speed = rand() % (200 - 10 + 1) + 10,
                                              });
         global.ecs->addComponent(krabbanKlo, Sprite{
                                                  .filepath = "assets/krabbanklo.png",
