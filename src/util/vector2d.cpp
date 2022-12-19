@@ -1,3 +1,4 @@
+#include <math.h>
 #include "vector2d.h"
 
 Vector2d::Vector2d()
@@ -92,6 +93,17 @@ Vector2d& Vector2d::zero()
 {
     this->x = 0;
     this->y = 0;
+
+    return *this;
+}
+
+Vector2d& Vector2d::normalize()
+{
+    float magnitude = sqrtf(this->x * this->x + this->y * this->y);
+    if (magnitude != 0) {
+        this->x /= magnitude;
+        this->y /= magnitude;
+    }
 
     return *this;
 }
