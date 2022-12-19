@@ -22,7 +22,7 @@ int main()
     const int height = 1280;
 
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
-        global.window = SDL_CreateWindow("Pyddelovs Quest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
+        global.window = SDL_CreateWindow("Pyddelovs Quest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_RENDERER_PRESENTVSYNC);
         global.renderer = SDL_CreateRenderer(global.window, -1, 0);
     }
 
@@ -77,7 +77,7 @@ int main()
     global.ecs->addComponent(player, Player{});
     global.ecs->addComponent(player, Transform{
                                          .position = Vector2d(freeTile.x, freeTile.y),
-                                         .speed = 200,
+                                         .speed = 3,
                                      });
     global.ecs->addComponent(player, Sprite{
                                          .filepath = "assets/pyddelov.png",
@@ -101,8 +101,8 @@ int main()
         auto playerTransform = global.ecs->getComponent<Transform>(player);
 
         keyboardSystem->update();
-        transformSystem->update(playerTransform.position, float(delta / 1000.0f));
-        collisionSystem->update(player, playerTransform, float(delta / 1000.0f));
+        transformSystem->update(playerTransform.position);
+        collisionSystem->update(player, playerTransform);
         spriteSystem->update();
 
         delta = SDL_GetTicks() - start;

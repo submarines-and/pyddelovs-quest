@@ -5,6 +5,9 @@ struct Sprite {
     const char* filepath;
     SDL_Rect src;
 
+    /** Override, pre-generated texture */
+    SDL_Texture* texture;
+
     SDL_RendererFlip flip = SDL_FLIP_NONE;
     int animationIndex = 0;
 
