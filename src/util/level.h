@@ -21,6 +21,7 @@ private:
     enum Teasures {
         SEASHELL,
         FLOWER,
+        BREAD,
     };
 
     enum Obstacles {

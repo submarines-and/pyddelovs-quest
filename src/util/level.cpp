@@ -154,8 +154,12 @@ void Level::placeObjects()
             break;
 
         case GRASS:
-        case SNOW:
             treasureId = FLOWER;
+            obstacleId = TREE;
+            break;
+
+        case SNOW:
+            treasureId = BREAD;
             obstacleId = TREE;
             break;
 
@@ -170,7 +174,7 @@ void Level::placeObjects()
         auto treasureTile = global.ecs->createEntity();
         global.ecs->addComponent(treasureTile, Transform{.position = Vector2d(t.x, t.y)});
         global.ecs->addComponent(treasureTile, Collision{.collectible = hasTreasure});
-        
+
         global.ecs->addComponent(
             treasureTile, Sprite{
                               .filepath = hasTreasure ? "assets/treasures.png" : "assets/obstacles.png",
