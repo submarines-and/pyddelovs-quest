@@ -1,5 +1,6 @@
 #include "score.h"
 #include "components/ai.h"
+#include "components/collision.h"
 #include "components/transform.h"
 #include "components/sprite.h"
 
@@ -27,9 +28,10 @@ void Score::pickupTreasure(int treasure)
 
         auto krabbanKlo = global.ecs->createEntity();
         global.ecs->addComponent(krabbanKlo, AI{});
+        global.ecs->addComponent(krabbanKlo, Collision{});
         global.ecs->addComponent(krabbanKlo, Transform{
                                                  .position = Vector2d(x, y),
-                                                 .speed = rand() % (200 - 10 + 1) + 10,
+                                                 .speed = rand() % (150 -20 + 1) + 20,
                                              });
         global.ecs->addComponent(krabbanKlo, Sprite{
                                                  .filepath = "assets/krabbanklo.png",
