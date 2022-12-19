@@ -21,12 +21,12 @@ public:
                 auto& collision = global.ecs->getComponent<Collision>(e);
 
                 if (collision.collectible) {
-                    global.sound->playSoundEffect("sound/egg.wav");
+                    global.sound->playSoundEffect("sound/money.wav");
                     global.ecs->destroyEntity(e);
                     break;
                 }
 
-                // global.sound.playSoundEffect("sound/bounce.wav");
+                // global.sound.playSoundEffect("sound/rock.wav");
 
                 playerTransform.position.x -= playerTransform.direction.x * deltaTime * playerTransform.speed;
                 playerTransform.position.y -= playerTransform.direction.y * deltaTime * playerTransform.speed;
