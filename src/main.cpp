@@ -13,6 +13,7 @@
 #include "systems/transform-system.h"
 
 #include "util/level.h"
+#include "util/score.h"
 
 /** Init global state and make accessible for main function. */
 static Global global_instance;
@@ -29,6 +30,7 @@ int main()
     }
 
     global.sound = new Sound();
+    global.score = new Score();
 
     global.ecs = new ECS();
     global.ecs->init();
@@ -108,28 +110,6 @@ int main()
                                          },
                                          .frames = 3,
                                      });
-
-    /**
-     *
-     * Krabban klo
-     *
-     */
-    auto krabbanKlo = global.ecs->createEntity();
-    global.ecs->addComponent(krabbanKlo, AI{});
-    global.ecs->addComponent(krabbanKlo, Transform{
-                                             .position = Vector2d(freeTile.x * 2, freeTile.y * 2),
-                                             .speed = 100,
-                                         });
-    global.ecs->addComponent(krabbanKlo, Sprite{
-                                             .filepath = "assets/krabbanklo.png",
-                                             .src = {
-                                                 .x = 0,
-                                                 .y = 0,
-                                                 .h = 32,
-                                                 .w = 32,
-                                             },
-                                             .frames = 2,
-                                         });
 
     // main loop
     const int fps = 1000 / 60;
