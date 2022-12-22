@@ -31,6 +31,8 @@ public:
                                              },
                                          });
 
+      //  global.sound->playSoundEffect("sound/shoot.wav");
+
         return entity;
     }
 };
