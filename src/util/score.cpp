@@ -14,7 +14,7 @@ void Score::pickupTreasure(int treasure)
     }
 
     // spawn krabban klo every X points
-    if (score % 3 == 0) {
+    if (score % 2 == 0) {
         auto modifier = (score / 10) % 2 == 0;
         auto x = modifier ? 0 : 2000;
         ;
