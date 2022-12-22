@@ -6,6 +6,8 @@
 #include "components/transform.h"
 #include "components/sprite.h"
 
+#include "entities/pyddelov.h"
+
 #include "systems/ai-system.h"
 #include "systems/collision-system.h"
 #include "systems/keyboard-system.h"
@@ -21,11 +23,17 @@ Global& global = global_instance;
 
 int main()
 {
-    const int width = 1280;
-    const int height = 1280;
+    const int width = 960;
+    const int height = 960;
 
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
-        global.window = SDL_CreateWindow("Pyddelovs Quest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_RENDERER_PRESENTVSYNC);
+        global.window = SDL_CreateWindow(
+            "Pyddelovs Quest",
+            SDL_WINDOWPOS_CENTERED,
+            SDL_WINDOWPOS_CENTERED,
+            width,
+            height,
+            SDL_RENDERER_PRESENTVSYNC | SDL_GL_RETAINED_BACKING);
         global.renderer = SDL_CreateRenderer(global.window, -1, 0);
     }
 
@@ -81,35 +89,12 @@ int main()
         global.ecs->setSystemSignature<AISystem>(signature);
     }
 
-    /**
-     *
-     * LEvel
-     *
-     */
-    Level level = Level(width * 3, height * 3);
+    /** Generate level */
+    Level level = Level(width * 4, height * 4);
     auto freeTile = level.getFreeTile(width / 2, height / 2);
 
-    /**
-     *
-     * Pyddelov
-     *
-     */
-    auto player = global.ecs->createEntity();
-    global.ecs->addComponent(player, Player{});
-    global.ecs->addComponent(player, Transform{
-                                         .position = Vector2d(freeTile.x, freeTile.y),
-                                         .speed = 100,
-                                     });
-    global.ecs->addComponent(player, Sprite{
-                                         .filepath = "assets/pyddelov.png",
-                                         .src = {
-                                             .x = 0,
-                                             .y = 0,
-                                             .h = 32,
-                                             .w = 32,
-                                         },
-                                         .frames = 3,
-                                     });
+    /** Create pyddelov */
+    auto player = Pyddelov::create(freeTile.x, freeTile.y);
 
     // main loop
     const int fps = 1000 / 60;
