@@ -1,5 +1,5 @@
 #pragma once
 
-struct AI{
-
+struct AI {
+    int health = 1;
 };
