@@ -1,8 +1,9 @@
 #include "game.h"
-#include "ecs/components.h"
-#include "ecs/ecs.h"
-#include "map.h"
 #include "texture-manager.h"
+#include "ecs/ecs.h"
+#include "ecs/components.h"
+#include "map.h"
+#include "vector2d.h"
 
 Map* map;
 SDL_Renderer* Game::renderer = nullptr;
@@ -36,7 +37,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     map = new Map();
 
     // give access to pos variables
-    player.addComponent<TransformComponent>(100, 500);
+    player.addComponent<TransformComponent>(100.0f, 100.0f);
     player.addComponent<SpriteComponent>("assets/pyddelov.png");
 }
 
@@ -57,6 +58,8 @@ void Game::handleEvents() {
 void Game::update() {
     manager.refresh();
     manager.update();
+
+  //  player.getComponent<TransformComponent>().position.add(Vector2d(5, 0));
 }
 
 void Game::render() {

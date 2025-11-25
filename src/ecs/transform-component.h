@@ -1,35 +1,19 @@
 #pragma once
-#include "ecs.h"
+#include "../vector2d.h"
 
 class TransformComponent : public Component {
-private:
-    int xPos, yPos;
-
 public:
+    Vector2d position;
+
     /** If no size specified*/
     TransformComponent() {
-        xPos = 0;
-        yPos = 0;
+        position.x = 0;
+        position.y = 0;
     }
 
     /** Custom size */
-    TransformComponent(int x, int y) {
-        xPos = x;
-        yPos = y;
-    }
-
-    int x() { return xPos; }
-    int y() { return yPos; }
-
-    void init() override {}
-
-    void update() override {
-        yPos++;
-        xPos++;
-    }
-
-    void setPosition(int x, int y) {
-        xPos = x;
-        yPos = y;
+    TransformComponent(float x, float y) {
+        position.x = x;
+        position.y = y;
     }
 };

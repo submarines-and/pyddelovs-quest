@@ -16,8 +16,6 @@ SRC  = $(wildcard src/**/*.cpp) $(wildcard src/*.cpp) $(wildcard src/**/**/*.cpp
 OBJ  = $(SRC:.cpp=.o)
 BIN = bin
 
-all: clean dirs build
-
 clean:
 	rm -rf $(BIN) $(OBJ)
 
@@ -36,7 +34,7 @@ install:
 build: $(OBJ)
 	clang++ -o $(BIN)/game $^ $(LDFLAGS) -v
 
-start: all
+start: clean dirs build
 	$(BIN)/game
 
 

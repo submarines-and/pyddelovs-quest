@@ -79,7 +79,7 @@ public:
     bool isActive() const { return active; }
 
     /** Call entity destroy function to remove from the game */
-    bool destroy() { active = false; }
+    void destroy() { active = false; }
 
     /** Is component still attached? */
     template <typename T>
