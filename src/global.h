@@ -11,12 +11,13 @@ struct Global {
     SDL_Window* window;
     SDL_Renderer* renderer;
 
-    Camera* camera;
-
     EntityManager entityManager;
+    Camera* camera;
     Level level;
-    SoundManager soundManager;
+    Sound sound;
     Textures textures;
+
+    Entity* pyddelov;
 };
 
 /** Will be created by main.cpp */
