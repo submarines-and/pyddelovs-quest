@@ -1,8 +1,6 @@
 #include "game.h"
 #include "texture-manager.h"
-
-SDL_Texture *playerTexture;
-SDL_Rect srcRect, destRect;
+#include "entity.h"
 
 Game::Game()
 {
@@ -11,6 +9,8 @@ Game::Game()
 Game::~Game()
 {
 }
+
+Entity *pyddelov;
 
 void Game::init(const char *title, int x, int y, int width, int height, bool fullscreen)
 {
@@ -34,7 +34,7 @@ void Game::init(const char *title, int x, int y, int width, int height, bool ful
     }
 
     // load pyddelov
-    playerTexture = TextureManager::loadTexture("assets/pyddelov.png", renderer);
+    pyddelov = new Entity("assets/pyddelov.png", renderer);
 }
 
 void Game::handleEvents()
@@ -55,15 +55,13 @@ void Game::handleEvents()
 
 void Game::update()
 {
-    destRect.h = 64;
-    destRect.w = 64;
+    pyddelov->update();
 }
 
 void Game::render()
 {
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, playerTexture, NULL, &destRect);
-
+    pyddelov->render();
     SDL_RenderPresent(renderer);
 }
 
