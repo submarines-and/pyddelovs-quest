@@ -72,9 +72,6 @@ void Level::generateTiles(int width, int height)
                 .y = y * mapScale,
             };
 
-            // for local variants
-            auto local = rand() % (100 + 1);
-
             if (tileValue < 0.3) {
                 tile.typeId = SNOW;
             }
