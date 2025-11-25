@@ -1,14 +1,10 @@
 #include "global.h"
-#include "managers/texture-manager.h"
 #include "components/transform-component.h"
 #include "components/sprite-component.h"
 #include "components/keyboard-component.h"
 #include "components/collision-component.h"
 #include "components/tile-component.h"
-#include "level/level.h"
-#include "util/vector2d.h"
 #include "util/camera.h"
-#include "managers/entity-manager.h"
 
 /** Init global state and make accessible for main function. */
 static Global global_instance;
@@ -18,8 +14,6 @@ auto& player(global.entityManager.addEntity());
 
 void init(const char* title, int x, int y, int width, int height, bool fullscreen)
 {
-    printf("Starting SDL...\n");
-
     int flags = 0;
     if (fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN;
@@ -33,28 +27,10 @@ void init(const char* title, int x, int y, int width, int height, bool fullscree
     // set initial camera position
     global.camera = new Camera(width, height);
 
-    printf("Generating map...\n");
-    Map::generate(width * 4, height * 4);
-
-    printf("Placing tiles...\n");
-    for (auto t : Map::tiles) {
-
-        auto& tile(global.entityManager.addEntity());
-        tile.addComponent<TileComponent>(t.x, t.y, 32, 32, t.typeId);
-
-        switch (t.typeId) {
-        case TileComponent::ROCK:
-        case TileComponent::WATER:
-            tile.addComponent<CollisionComponent>();
-            break;
-
-        default:
-            break;
-        }
-    }
+    // initial map
+    global.levelManager.generate(width * 4, height * 4);
 
     // place player in passabel terrain
-    printf("Add pyddelov...");
     player.addComponent<TransformComponent>(width / 2, height / 2);
     player.addComponent<SpriteComponent>("assets/pyddelov.png", 4, 100);
     player.addComponent<KeyboardComponent>();

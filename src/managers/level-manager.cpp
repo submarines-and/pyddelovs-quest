@@ -1,11 +1,10 @@
-#include "level.h"
+#include "level-manager.h"
 #include "components/tile-component.h"
+#include "components/collision-component.h"
 
-/** Will be populated by the generate function*/
-std::vector<TilePlacement> Map::tiles;
 
 /** Generate noise map with tiles */
-void Map::generate(int width, int height)
+std::vector<TilePlacement> LevelManager::generateTiles(int width, int height)
 {
     int octaves = 4;
     int mapScale = 32;
@@ -51,6 +50,8 @@ void Map::generate(int width, int height)
         }
     }
 
+    std::vector<TilePlacement> tiles;
+
     // map to tiles
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
@@ -79,4 +80,32 @@ void Map::generate(int width, int height)
             tiles.push_back(tile);
         }
     }
+
+    return tiles;
+}
+
+/** Place maps in world */
+void LevelManager::placeTiles(std::vector<TilePlacement> tiles)
+{
+    for (auto t : tiles) {
+
+        auto& tile(global.entityManager.addEntity());
+        tile.addComponent<TileComponent>(t.x, t.y, 32, 32, t.typeId);
+
+        switch (t.typeId) {
+        case TileComponent::ROCK:
+        case TileComponent::WATER:
+            tile.addComponent<CollisionComponent>();
+            break;
+
+        default:
+            break;
+        }
+    }
+}
+
+void LevelManager::generate(int width, int height)
+{
+    auto tiles = generateTiles(width, height);
+    placeTiles(tiles);
 }

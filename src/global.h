@@ -3,6 +3,7 @@
 #include "util/camera.h"
 #include "util/sound.h"
 #include "managers/entity-manager.h"
+#include "managers/level-manager.h"
 #include "managers/texture-manager.h"
 
 /** All globally available objects */
@@ -13,6 +14,7 @@ struct Global {
     Camera* camera;
 
     EntityManager entityManager;
+    LevelManager levelManager;
     SoundManager soundManager;
     TextureManager textureManager;
 };
