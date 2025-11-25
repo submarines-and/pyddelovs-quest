@@ -16,6 +16,8 @@ public:
 
             transform.direction.x = playerPosition.x > transform.position.x ? 1 : -1;
             transform.direction.y = playerPosition.y > transform.position.y ? 1 : -1;
+
+            transform.direction.normalize();
         }
     }
 };

@@ -1,11 +1,6 @@
 #include "score.h"
-#include "components/ai.h"
-#include "components/collision.h"
-#include "components/transform.h"
-#include "components/sprite.h"
-
+#include "entities/krabban-klo.h"
 #include "util/level.h"
-#include "global.h"
 
 void Score::pickupTreasure(int treasure)
 {
@@ -24,24 +19,7 @@ void Score::pickupTreasure(int treasure)
         auto x = modifier ? 0 : 2000;
         ;
         auto y = modifier ? 0 : 2000;
-        ;
 
-        auto krabbanKlo = global.ecs->createEntity();
-        global.ecs->addComponent(krabbanKlo, AI{});
-        global.ecs->addComponent(krabbanKlo, Collision{});
-        global.ecs->addComponent(krabbanKlo, Transform{
-                                                 .position = Vector2d(x, y),
-                                                 .speed = rand() % (150 -20 + 1) + 20,
-                                             });
-        global.ecs->addComponent(krabbanKlo, Sprite{
-                                                 .filepath = "assets/krabbanklo.png",
-                                                 .src = {
-                                                     .x = 0,
-                                                     .y = 0,
-                                                     .h = 32,
-                                                     .w = 32,
-                                                 },
-                                                 .frames = 2,
-                                             });
+        KrabbanKlo::create(x, y);
     }
 }
