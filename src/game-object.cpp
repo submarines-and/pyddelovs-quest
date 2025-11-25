@@ -1,7 +1,7 @@
-#include "entity.h"
+#include "game-object.h"
 #include "texture-manager.h"
 
-Entity::Entity(const char *filename, int x, int y)
+GameObject::GameObject(const char *filename, int x, int y)
 {
     texture = TextureManager::loadTexture(filename);
 
@@ -9,7 +9,7 @@ Entity::Entity(const char *filename, int x, int y)
     yPos = y;
 }
 
-void Entity::update()
+void GameObject::update()
 {
 
     srcRect.h = 32;
@@ -23,7 +23,7 @@ void Entity::update()
     destRect.h = srcRect.h * 2;
 }
 
-void Entity::render()
+void GameObject::render()
 {
     SDL_RenderCopy(Game::renderer, texture, &srcRect, &destRect);
 }

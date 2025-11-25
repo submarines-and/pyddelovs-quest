@@ -1,11 +1,11 @@
 #pragma once
 #include "game.h"
 
-class Entity
+class GameObject
 {
 public:
-    Entity(const char *filename, int x, int y);
-    ~Entity();
+    GameObject(const char *filename, int x, int y);
+    ~GameObject();
 
     void update();
     void render();
