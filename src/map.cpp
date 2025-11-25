@@ -1,7 +1,8 @@
 #include "map.h"
-#include "game.h"
-#include <iostream>
 #include "ecs/tile-component.h"
+
+/** Will be populated by the generate function*/
+std::vector<TilePlacement> Map::tiles;
 
 /** Generate noise map with tiles */
 void Map::generate(int width, int height)
@@ -55,20 +56,24 @@ void Map::generate(int width, int height)
         for (int y = 0; y < height; y++) {
             float tileValue = perlinNoise[y * width + x];
 
-            //  std::cout << tileValue << std::endl;
+            TilePlacement tile = TilePlacement();
+            tile.x = x * mapScale;
+            tile.y = y * mapScale;
 
             if (tileValue < 0.32) {
-                Game::addTile(TileComponent::ROCK, x * mapScale, y * mapScale);
+                tile.typeId = TileComponent::ROCK;
             }
             else if (tileValue < 0.6) {
-                Game::addTile(TileComponent::GRASS, x * mapScale, y * mapScale);
+                tile.typeId = TileComponent::GRASS;
             }
             else if (tileValue < 0.65) {
-                Game::addTile(TileComponent::SAND, x * mapScale, y * mapScale);
+                tile.typeId = TileComponent::SAND;
             }
             else {
-                Game::addTile(TileComponent::WATER, x * mapScale, y * mapScale);
+                tile.typeId = TileComponent::WATER;
             }
+
+            tiles.push_back(tile);
         }
     }
 }
