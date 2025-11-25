@@ -25,8 +25,11 @@ dirs:
 	mkdir -p ./$(BIN)
 
 install:
-#	git submodule deinit -f . && git submodule update --init
-#	cd lib/sdl && git checkout SDL2 && ./configure && make && make install
+	git submodule deinit -f . && git submodule update --init
+	git update-index --assume-unchanged lib/sdl
+	git update-index --assume-unchanged lib/sdl-image
+
+	cd lib/sdl && git checkout SDL2 && ./configure && make && make install
 	cd lib/sdl-image && ./configure && make && make install
 	cp lib/sdl-image/SDL_image.h lib/sdl/include/SDL_image.h
 
