@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <string>
-#include "managers/entity-manager.h"
+#include "character/entity.h"
 #include "transform-component.h"
 
 

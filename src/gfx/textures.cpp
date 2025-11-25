@@ -1,7 +1,7 @@
-#include "texture-manager.h"
+#include "textures.h"
 #include "global.h"
 
-SDL_Texture* TextureManager::loadTexture(const char* filepath)
+SDL_Texture* Textures::loadTexture(const char* filepath)
 {
     // check cache
     if (textures.count(filepath)) {
@@ -16,7 +16,7 @@ SDL_Texture* TextureManager::loadTexture(const char* filepath)
     return texture;
 }
 
-void TextureManager::render(SDL_Texture* texture, SDL_Rect src, SDL_Rect dest, SDL_RendererFlip flip)
+void Textures::render(SDL_Texture* texture, SDL_Rect src, SDL_Rect dest, SDL_RendererFlip flip)
 {
     SDL_RenderCopyEx(global.renderer, texture, &src, &dest, 0, NULL, flip);
 }

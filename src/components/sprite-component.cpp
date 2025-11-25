@@ -3,7 +3,7 @@
 
 SpriteComponent::SpriteComponent(const char* filepath)
 {
-    texture = global.textureManager.loadTexture(filepath);
+    texture = global.textures.loadTexture(filepath);
 }
 
 SpriteComponent::SpriteComponent(const char* filepath, int mFrames, int mSpeed)
@@ -15,7 +15,7 @@ SpriteComponent::SpriteComponent(const char* filepath, int mFrames, int mSpeed)
     animations.emplace("Idle", idle);
     animations.emplace("Walk", idle);
 
-    texture = global.textureManager.loadTexture(filepath);
+    texture = global.textures.loadTexture(filepath);
 
     // play default animation
     playAnimation("Idle");
@@ -51,7 +51,7 @@ void SpriteComponent::update()
 
 void SpriteComponent::render()
 {
-    global.textureManager.render(texture, srcRect, destRect, spriteFlipped);
+    global.textures.render(texture, srcRect, destRect, spriteFlipped);
 }
 
 void SpriteComponent::playAnimation(const char* animationName)

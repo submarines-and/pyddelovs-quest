@@ -1,10 +1,10 @@
-#include "level-manager.h"
+#include "level.h"
 #include "components/tile-component.h"
 #include "components/collision-component.h"
 #include "global.h"
 
 /** Generate noise map with tiles */
-std::vector<TilePlacement> LevelManager::generateTiles(int width, int height)
+std::vector<TilePlacement> Level::generateTiles(int width, int height)
 {
     int octaves = 4;
     int mapScale = 32;
@@ -85,7 +85,7 @@ std::vector<TilePlacement> LevelManager::generateTiles(int width, int height)
 }
 
 /** Place maps in world */
-void LevelManager::placeTiles(std::vector<TilePlacement> tiles)
+void Level::placeTiles(std::vector<TilePlacement> tiles)
 {
     for (auto t : tiles) {
 
@@ -104,7 +104,7 @@ void LevelManager::placeTiles(std::vector<TilePlacement> tiles)
     }
 }
 
-void LevelManager::generate(int width, int height)
+void Level::generate(int width, int height)
 {
     auto tiles = generateTiles(width, height);
     placeTiles(tiles);

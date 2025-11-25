@@ -6,7 +6,7 @@ TileComponent::TileComponent(int x, int y, int w, int h, int tileId)
 {
 
     // load spritesheet
-    texture = global.textureManager.loadTexture("assets/terrain.png");
+    texture = global.textures.loadTexture("assets/terrain.png");
 
     // sprite sheets are always 32x32
     srcRect.w = srcRect.h = 32;
@@ -37,7 +37,7 @@ void TileComponent::init()
 
 void TileComponent::render()
 {
-    global.textureManager.render(texture, srcRect, destRect, SDL_FLIP_NONE);
+    global.textures.render(texture, srcRect, destRect, SDL_FLIP_NONE);
 }
 
 void TileComponent::update()

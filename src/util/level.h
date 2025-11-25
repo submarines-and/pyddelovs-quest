@@ -7,7 +7,7 @@ struct TilePlacement {
     int typeId;
 };
 
-class LevelManager {
+class Level {
 private:
     std::vector<TilePlacement> generateTiles(int width, int height);
     void placeTiles(std::vector<TilePlacement> tiles);
