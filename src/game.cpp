@@ -9,6 +9,7 @@
 
 #include "map.h"
 #include "vector2d.h"
+#include <iostream>
 
 Manager manager;
 SDL_Renderer* Game::renderer = nullptr;
@@ -64,7 +65,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
 
     // place player in passabel terrain
     bool placed = false;
-    for (int i = Map::tiles.size() / 4; i < Map::tiles.size(); i++) {
+    for (int i = Map::tiles.size() / 2; i < Map::tiles.size(); i++) {
         if (placed) {
             break;
         }
@@ -76,7 +77,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         }
     }
 
-    player.addComponent<SpriteComponent>("assets/pyddelov.png");
+    player.addComponent<SpriteComponent>("assets/pyddelov-ss.png", 2, 100);
     player.addComponent<KeyboardComponent>();
     player.addComponent<CollisionComponent>("player");
     player.addGroup(PLAYER);

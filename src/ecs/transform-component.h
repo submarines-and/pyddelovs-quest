@@ -12,7 +12,7 @@ public:
     int scale = 1;
 
     /** Arbitrary */
-    int speed = 3;
+    int speed = 8;
 
     /** If no size specified*/
     TransformComponent() {

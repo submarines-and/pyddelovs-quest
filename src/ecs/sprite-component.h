@@ -10,22 +10,42 @@ private:
     SDL_Texture* texture;
     SDL_Rect srcRect, destRect;
 
+    /** Set to true if sprite is animated */
+    bool animated = false;
+    int frames = 0;
+
+    /** Delay in ms */
+    int speed = 100;
+
 public:
     SpriteComponent() = default;
 
-    SpriteComponent(const char* filepath) {
+    SpriteComponent(const char* filepath)
+    {
         setTexture(filepath);
     }
 
-    ~SpriteComponent() {
+    SpriteComponent(const char* filepath, int mFrames, int mSpeed)
+    {
+        animated = true;
+        frames = mFrames;
+        speed = mSpeed;
+
+        setTexture(filepath);
+    }
+
+    ~SpriteComponent()
+    {
         SDL_DestroyTexture(texture);
     }
 
-    void setTexture(const char* filepath) {
+    void setTexture(const char* filepath)
+    {
         texture = TextureManager::loadTexture(filepath);
     }
 
-    void init() override {
+    void init() override
+    {
         transform = &entity->getComponent<TransformComponent>();
 
         srcRect.x = srcRect.y = 0;
@@ -38,7 +58,12 @@ public:
         destRect.h = srcRect.h * transform->scale;
     }
 
-    void update() override {
+    void update() override
+    {
+        if (animated) {
+            srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+        }
+
         destRect.x = static_cast<int>(transform->position.x);
         destRect.y = static_cast<int>(transform->position.y);
 
@@ -46,7 +71,8 @@ public:
         destRect.h = transform->height * transform->scale;
     }
 
-    void render() override {
+    void render() override
+    {
         TextureManager::render(texture, srcRect, destRect);
     }
 };
