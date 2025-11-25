@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include "ecs/ecs.h"
 #include "util/sound.h"
+#include "util/score.h"
 
 /** All globally available objects */
 struct Global {
@@ -10,6 +11,7 @@ struct Global {
 
     ECS* ecs;
     Sound* sound;
+    Score* score;
 };
 
 /** Will be created by main.cpp */

@@ -1,5 +1,7 @@
 #pragma once
 
 struct Collision {
-    bool collectible = false;
+
+    /***/
+    int treasureId = -1;
 };

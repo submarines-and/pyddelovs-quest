@@ -167,13 +167,10 @@ void Level::placeObjects()
             break;
         }
 
-        if (treasureId == -1) {
-            continue;
-        }
 
         auto treasureTile = global.ecs->createEntity();
         global.ecs->addComponent(treasureTile, Transform{.position = Vector2d(t.x, t.y)});
-        global.ecs->addComponent(treasureTile, Collision{.collectible = hasTreasure});
+        global.ecs->addComponent(treasureTile, Collision{.treasureId = hasTreasure ? treasureId : -1});
 
         global.ecs->addComponent(
             treasureTile, Sprite{

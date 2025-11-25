@@ -18,12 +18,6 @@ private:
         SNOW,
     };
 
-    enum Teasures {
-        SEASHELL,
-        FLOWER,
-        BREAD,
-    };
-
     enum Obstacles {
         TREE,
         ROCK,
@@ -34,6 +28,12 @@ private:
     void placeObjects();
 
 public:
+    enum Teasures {
+        SEASHELL,
+        FLOWER,
+        BREAD,
+    };
+
     Level(int width, int height);
     TilePlacement getFreeTile(int startX, int startY);
 };
