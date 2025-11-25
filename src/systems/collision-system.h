@@ -9,7 +9,7 @@
 
 class CollisionSystem : public System {
 public:
-    void update(Entity player, Transform playerTransformBeforeUpdates, float deltaTime)
+    void update(Entity player, Transform playerTransformBeforeUpdates)
     {
         auto& playerTransform = global.ecs->getComponent<Transform>(player);
 
@@ -28,8 +28,8 @@ public:
 
                 // global.sound.playSoundEffect("sound/rock.wav");
 
-                playerTransform.position.x -= playerTransform.direction.x * deltaTime * playerTransform.speed;
-                playerTransform.position.y -= playerTransform.direction.y * deltaTime * playerTransform.speed;
+                playerTransform.position.x -= playerTransform.direction.x * playerTransform.speed;
+                playerTransform.position.y -= playerTransform.direction.y * playerTransform.speed;
                 break;
             }
         }

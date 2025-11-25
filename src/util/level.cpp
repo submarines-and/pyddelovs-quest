@@ -1,3 +1,6 @@
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
 #include "components/collision.h"
 #include "components/transform.h"
 #include "components/sprite.h"
@@ -8,7 +11,8 @@
 Level::Level(int width, int height)
 {
     generateTiles(width, height);
-    placeTiles();
+    placeTiles(width, height);
+    placeObjects();
 }
 
 /** Generate noise map with tiles */
@@ -71,14 +75,11 @@ void Level::generateTiles(int width, int height)
             // for local variants
             auto local = rand() % (100 + 1);
 
-            if (tileValue < 0.1) {
+            if (tileValue < 0.3) {
                 tile.typeId = SNOW;
             }
-            else if (tileValue < 0.27) {
-                tile.typeId = ROCK;
-            }
             else if (tileValue < 0.55) {
-                tile.typeId = local < 5 ? TREE : GRASS;
+                tile.typeId = GRASS;
             }
             else if (tileValue < 0.60) {
                 tile.typeId = SAND;
@@ -93,13 +94,17 @@ void Level::generateTiles(int width, int height)
 }
 
 /** Place maps in world */
-void Level::placeTiles()
+void Level::placeTiles(int width, int height)
 {
-    for (auto t : tiles) {
+    auto* surface = IMG_Load("assets/terrain.png");
+    auto* terrainTexture = SDL_CreateTextureFromSurface(global.renderer, surface);
+    SDL_FreeSurface(surface);
 
-        // int spriteRows = 3;
-        // srcRect.x = (tileId % spriteRows) * w;
-        // srcRect.y = (tileId / spriteRows) * h;
+    auto* levelTexture = SDL_CreateTexture(global.renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+    SDL_SetRenderTarget(global.renderer, levelTexture);
+    SDL_RenderClear(global.renderer);
+
+    for (auto t : tiles) {
         SDL_Rect src{
             .x = t.typeId * 32,
             .y = 0,
@@ -107,47 +112,54 @@ void Level::placeTiles()
             .w = 32,
         };
 
-        auto tile = global.ecs->createEntity();
-        global.ecs->addComponent(tile, Transform{.position = Vector2d(t.x, t.y)});
-        global.ecs->addComponent(tile, Sprite{
-                                           .filepath = "assets/terrain.png",
-                                           .src = src,
-                                       });
+        SDL_Rect dest{
+            .w = 32,
+            .h = 32,
+            .x = t.x,
+            .y = t.y,
+        };
 
-        switch (t.typeId) {
-        case ROCK:
-            // case WATER:
-            global.ecs->addComponent(tile, Collision{});
-            break;
+        SDL_RenderCopy(global.renderer, terrainTexture, &src, &dest);
+    }
+    SDL_SetRenderTarget(global.renderer, NULL);
 
-        default:
-            break;
-        }
+    auto level = global.ecs->createEntity();
+    global.ecs->addComponent(level, Transform{
+                                        .position = Vector2d(0, 0),
+                                        .width = width,
+                                        .height = height,
+                                    });
+    global.ecs->addComponent(level, Sprite{.texture = levelTexture, .src = {.x = 0, .y = 0, .w = width, .h = height}});
+}
+
+void Level::placeObjects()
+{
+    for (auto t : tiles) {
 
         // add treasure to tile
-        auto hasTreasure = (rand() % (100 + 1) < 1);
-        if (!hasTreasure) {
+        auto hasObstacle = (rand() % (100 + 1) < 1);
+        auto hasTreasure = !hasObstacle && (rand() % (100 + 1) < 1);
+        if (!hasTreasure && !hasObstacle) {
             continue;
         }
 
         int treasureId = -1;
+        int obstacleId = -1;
 
         switch (t.typeId) {
         case WATER:
         case SAND:
             treasureId = SEASHELL;
+            obstacleId = ROCK;
             break;
 
         case GRASS:
-            treasureId = FLOWER;
-            break;
-
         case SNOW:
+            treasureId = FLOWER;
+            obstacleId = TREE;
             break;
 
         default:
-        case ROCK:
-        case TREE:
             break;
         }
 
@@ -157,12 +169,13 @@ void Level::placeTiles()
 
         auto treasureTile = global.ecs->createEntity();
         global.ecs->addComponent(treasureTile, Transform{.position = Vector2d(t.x, t.y)});
-        global.ecs->addComponent(treasureTile, Collision{.collectible = true});
+        global.ecs->addComponent(treasureTile, Collision{.collectible = hasTreasure});
+        
         global.ecs->addComponent(
             treasureTile, Sprite{
-                              .filepath = "assets/treasures.png",
+                              .filepath = hasTreasure ? "assets/treasures.png" : "assets/obstacles.png",
                               .src = {
-                                  .x = treasureId * 32,
+                                  .x = (hasTreasure ? treasureId : obstacleId) * 32,
                                   .y = 0,
                                   .h = 32,
                                   .w = 32,
@@ -177,17 +190,6 @@ TilePlacement Level::getFreeTile(int startX, int startY)
 
         if (t.x < startX || t.y < startY) {
             continue;
-        }
-
-        switch (t.typeId) {
-        case ROCK:
-        // case WATER:
-        case TREE:
-            break;
-
-            // first free tile
-        default:
-            return t;
         }
     }
 

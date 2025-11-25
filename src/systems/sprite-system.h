@@ -25,7 +25,10 @@ public:
             // get sprite
             // load if missing
             SDL_Texture* texture;
-            if (textures.count(sprite.filepath)) {
+            if (sprite.texture) {
+                texture = sprite.texture;
+            }
+            else if (textures.count(sprite.filepath)) {
                 texture = textures[sprite.filepath];
             }
             else {

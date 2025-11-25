@@ -15,9 +15,7 @@ private:
         GRASS,
         WATER,
         SAND,
-        ROCK,
         SNOW,
-        TREE,
     };
 
     enum Teasures {
@@ -25,8 +23,14 @@ private:
         FLOWER,
     };
 
+    enum Obstacles {
+        TREE,
+        ROCK,
+    };
+
     void generateTiles(int width, int height);
-    void placeTiles();
+    void placeTiles(int width, int height);
+    void placeObjects();
 
 public:
     Level(int width, int height);
