@@ -5,6 +5,12 @@
 #include "level.h"
 #include "global.h"
 
+Level::Level(int width, int height)
+{
+    generateTiles(width, height);
+    placeTiles();
+}
+
 /** Generate noise map with tiles */
 void Level::generateTiles(int width, int height)
 {
@@ -53,14 +59,17 @@ void Level::generateTiles(int width, int height)
     }
 
     // map to tiles
-
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
             float tileValue = perlinNoise[y * width + x];
 
-            TilePlacement tile = TilePlacement();
-            tile.x = x * mapScale;
-            tile.y = y * mapScale;
+            auto tile = TilePlacement{
+                .x = x * mapScale,
+                .y = y * mapScale,
+            };
+
+            // for local variants
+            auto local = rand() % (100 + 1);
 
             if (tileValue < 0.1) {
                 tile.typeId = SNOW;
@@ -68,16 +77,10 @@ void Level::generateTiles(int width, int height)
             else if (tileValue < 0.27) {
                 tile.typeId = ROCK;
             }
-            else if (tileValue < 0.56) {
-                tile.typeId = GRASS;
+            else if (tileValue < 0.55) {
+                tile.typeId = local < 5 ? TREE : GRASS;
             }
-            else if (tileValue < 0.58) {
-                tile.typeId = FLOWER;
-            }
-            else if (tileValue < 0.6) {
-                tile.typeId = TREE;
-            }
-            else if (tileValue < 0.7) {
+            else if (tileValue < 0.60) {
                 tile.typeId = SAND;
             }
             else {
@@ -113,14 +116,56 @@ void Level::placeTiles()
 
         switch (t.typeId) {
         case ROCK:
-        case WATER:
-        case TREE:
+            // case WATER:
             global.ecs->addComponent(tile, Collision{});
             break;
 
         default:
             break;
         }
+
+        // add treasure to tile
+        auto hasTreasure = (rand() % (100 + 1) < 1);
+        if (!hasTreasure) {
+            continue;
+        }
+
+        int treasureId = -1;
+
+        switch (t.typeId) {
+        case WATER:
+        case SAND:
+            treasureId = SEASHELL;
+            break;
+
+        case GRASS:
+            break;
+
+        case SNOW:
+            break;
+
+        default:
+        case ROCK:
+        case TREE:
+            break;
+        }
+
+        if (treasureId == -1) {
+            continue;
+        }
+
+        auto treasureTile = global.ecs->createEntity();
+        global.ecs->addComponent(treasureTile, Transform{.position = Vector2d(t.x, t.y)});
+        global.ecs->addComponent(
+            treasureTile, Sprite{
+                              .filepath = "assets/treasures.png",
+                              .src = {
+                                  .x = treasureId * 32,
+                                  .y = 0,
+                                  .h = 32,
+                                  .w = 32,
+                              },
+                          });
     }
 }
 
@@ -134,7 +179,7 @@ TilePlacement Level::getFreeTile(int startX, int startY)
 
         switch (t.typeId) {
         case ROCK:
-        case WATER:
+            //    case WATER:
         case TREE:
             break;
 

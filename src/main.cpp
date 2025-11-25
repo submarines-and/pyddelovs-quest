@@ -67,9 +67,7 @@ int main()
     }
 
     // create level
-    Level level;
-    level.generateTiles(width * 2, height * 2);
-    level.placeTiles();
+    Level level = Level(width * 2, height * 2);
     auto freeTile = level.getFreeTile(width / 2, height / 2);
 
     // create pyddelov
