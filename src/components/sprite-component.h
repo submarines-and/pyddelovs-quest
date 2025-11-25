@@ -1,7 +1,7 @@
 #pragma once
 #include "SDL2/SDL.h"
 #include <map>
-#include "util/entity-manager.h"
+#include "managers/entity-manager.h"
 #include "transform-component.h"
 #include "animation-component.h"
 #include "global.h"

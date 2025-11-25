@@ -1,9 +1,9 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include "util/camera.h"
-#include "util/sound-manager.h"
-#include "util/entity-manager.h"
-#include "gfx/texture-manager.h"
+#include "util/sound.h"
+#include "managers/entity-manager.h"
+#include "managers/texture-manager.h"
 
 /** All globally available objects */
 struct Global {
@@ -17,4 +17,5 @@ struct Global {
     TextureManager textureManager;
 };
 
+/** Will be created by main.cpp */
 extern Global& global;

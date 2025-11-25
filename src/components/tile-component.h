@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include "util/entity-manager.h"
+#include "managers/entity-manager.h"
 #include "transform-component.h"
 #include "global.h"
 
@@ -46,6 +46,8 @@ public:
 
     void init() override
     {
+        entity->addGroup(TERRAIN);
+
         if (!entity->hasComponent<TransformComponent>()) {
             entity->addComponent<TransformComponent>(destRect.x, destRect.y, destRect.w, destRect.h, 0);
         }
