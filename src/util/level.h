@@ -22,6 +22,7 @@ private:
 
     enum Teasures {
         SEASHELL,
+        FLOWER,
     };
 
     void generateTiles(int width, int height);

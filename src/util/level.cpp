@@ -139,6 +139,7 @@ void Level::placeTiles()
             break;
 
         case GRASS:
+            treasureId = FLOWER;
             break;
 
         case SNOW:
@@ -180,7 +181,7 @@ TilePlacement Level::getFreeTile(int startX, int startY)
 
         switch (t.typeId) {
         case ROCK:
-            //    case WATER:
+        // case WATER:
         case TREE:
             break;
 
