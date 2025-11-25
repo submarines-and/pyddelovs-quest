@@ -19,13 +19,17 @@ std::vector<CollisionComponent*> Game::colliders;
 
 auto& player(manager.addEntity());
 
-Game::Game() {
-}
+enum GroupLabel {
+    TERRAIN,
+    PLAYER,
+    ENEMY
+};
 
-Game::~Game() {
-}
+Game::Game() {}
+Game::~Game() {}
 
-void Game::init(const char* title, int x, int y, int width, int height, bool fullscreen) {
+void Game::init(const char* title, int x, int y, int width, int height, bool fullscreen)
+{
     int flags = 0;
     if (fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN;
@@ -37,7 +41,8 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
 
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         isRunning = true;
-    } else {
+    }
+    else {
         isRunning = false;
     }
 
@@ -47,9 +52,11 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     player.addComponent<SpriteComponent>("assets/pyddelov.png");
     player.addComponent<KeyboardComponent>();
     player.addComponent<CollisionComponent>("player");
+    player.addGroup(PLAYER);
 }
 
-void Game::handleEvents() {
+void Game::handleEvents()
+{
     SDL_PollEvent(&event);
 
     switch (event.type) {
@@ -62,7 +69,8 @@ void Game::handleEvents() {
     }
 }
 
-void Game::update() {
+void Game::update()
+{
     manager.refresh();
     manager.update();
 
@@ -82,19 +90,44 @@ void Game::update() {
     }
 }
 
-void Game::render() {
+auto& terrainGroup(manager.getGroup(TERRAIN));
+auto& playerGroup(manager.getGroup(PLAYER));
+
+void Game::render()
+{
     SDL_RenderClear(renderer);
-    manager.render();
+
+    for (auto& o : terrainGroup) {
+        o->render();
+    }
+
+    for (auto& o : playerGroup) {
+        o->render();
+    }
+
     SDL_RenderPresent(renderer);
 }
 
-void Game::clean() {
+void Game::clean()
+{
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
 }
 
-void Game::addTile(int id, int x, int y) {
+void Game::addTile(int id, int x, int y)
+{
     auto& tile(manager.addEntity());
     tile.addComponent<TileComponent>(x, y, 32, 32, id);
+    tile.addGroup(TERRAIN);
+
+    switch (id) {
+    case TileComponent::ROCK:
+    case TileComponent::WATER:
+        tile.addComponent<CollisionComponent>();
+        break;
+
+    default:
+        break;
+    }
 }
