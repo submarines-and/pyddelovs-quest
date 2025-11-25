@@ -1,30 +1,30 @@
 #include "game.h"
 
 int main() {
-  const int fps = 60;
-  const int frameDelay = 1000 / fps;
+    const int fps = 60;
+    const int frameDelay = 1000 / fps;
 
-  Uint32 frameStart;
-  int frameTime;
+    Uint32 frameStart;
+    int frameTime;
 
-  Game* game = new Game();
-  game->init("Pyddelovs Quest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false);
+    Game* game = new Game();
+    game->init("Pyddelovs Quest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false);
 
-  while (game->running()) {
-    frameStart = SDL_GetTicks();
+    while (game->running()) {
+        frameStart = SDL_GetTicks();
 
-    game->handleEvents();
-    game->update();
-    game->render();
+        game->handleEvents();
+        game->update();
+        game->render();
 
-    frameTime = SDL_GetTicks() - frameStart;
+        frameTime = SDL_GetTicks() - frameStart;
 
-    if (frameDelay > frameTime) {
-      SDL_Delay(frameDelay - frameTime);
+        if (frameDelay > frameTime) {
+            SDL_Delay(frameDelay - frameTime);
+        }
     }
-  }
 
-  game->clean();
+    game->clean();
 
-  return 0;
+    return 0;
 }

@@ -1,22 +1,19 @@
 #pragma once
 #include "ecs.h"
 
-class TransformComponent : public Component
-{
+class TransformComponent : public Component {
 private:
     int xPos, yPos;
 
 public:
     /** If no size specified*/
-    TransformComponent()
-    {
+    TransformComponent() {
         xPos = 0;
         yPos = 0;
     }
 
     /** Custom size */
-    TransformComponent(int x, int y)
-    {
+    TransformComponent(int x, int y) {
         xPos = x;
         yPos = y;
     }
@@ -26,14 +23,12 @@ public:
 
     void init() override {}
 
-    void update() override
-    {
+    void update() override {
         yPos++;
         xPos++;
     }
 
-    void setPosition(int x, int y)
-    {
+    void setPosition(int x, int y) {
         xPos = x;
         yPos = y;
     }
