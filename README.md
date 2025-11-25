@@ -1,5 +1,5 @@
 # Pyddelovs Quest
-You are a small, cold fox and the graphics are very confusing. Will you collect all treasures before you get eaten?
+You are a small fox and the graphics are very confusing. Will you collect all treasures before you get eaten?
 
 <img src="./assets/pyddelov.png" width="150"/>
 
