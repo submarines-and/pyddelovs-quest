@@ -156,6 +156,7 @@ void Level::placeTiles()
 
         auto treasureTile = global.ecs->createEntity();
         global.ecs->addComponent(treasureTile, Transform{.position = Vector2d(t.x, t.y)});
+        global.ecs->addComponent(treasureTile, Collision{.collectible = true});
         global.ecs->addComponent(
             treasureTile, Sprite{
                               .filepath = "assets/treasures.png",

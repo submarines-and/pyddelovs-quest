@@ -1,5 +1,7 @@
 #pragma once
 #include "components/transform.h"
+#include "components/collision.h"
+
 #include "ecs/component-manager.h"
 #include "ecs/system.h"
 #include "util/vector2d.h"
@@ -15,7 +17,16 @@ public:
             auto& transform = global.ecs->getComponent<Transform>(e);
 
             if (Transform::isOverlapping(playerTransform, transform)) {
-                // global.sound.playSoundEffect("sound/character/bounce.wav");
+
+                auto& collision = global.ecs->getComponent<Collision>(e);
+
+                if (collision.collectible) {
+                    global.sound->playSoundEffect("sound/egg.wav");
+                    global.ecs->destroyEntity(e);
+                    break;
+                }
+
+                // global.sound.playSoundEffect("sound/bounce.wav");
 
                 playerTransform.position.x -= playerTransform.direction.x * deltaTime * playerTransform.speed;
                 playerTransform.position.y -= playerTransform.direction.y * deltaTime * playerTransform.speed;

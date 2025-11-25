@@ -26,6 +26,8 @@ int main()
         global.renderer = SDL_CreateRenderer(global.window, -1, 0);
     }
 
+    global.sound = new Sound();
+
     global.ecs = new ECS();
     global.ecs->init();
 
