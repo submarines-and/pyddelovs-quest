@@ -1,6 +1,6 @@
 #include "global.h"
 #include "util/camera.h"
-#include "character/pyddelov.h"
+#include "entity/pyddelov.h"
 #include "components/transform-component.h"
 #include "systems/collision.h"
 
@@ -37,7 +37,6 @@ void update()
 {
     auto playerPosition = global.pyddelov->getComponent<TransformComponent>().position;
 
-    global.entityManager.refresh();
     global.entityManager.update();
     global.collision->update(playerPosition);
     global.camera->update(global.pyddelov->getComponent<TransformComponent>().position);
@@ -47,13 +46,10 @@ void render()
 {
     SDL_RenderClear(global.renderer);
 
-    for (auto& o : global.entityManager.getGroup(0)) {
+    for (auto o : global.entityManager.entities) {
         o->render();
     }
 
-    for (auto& o : global.entityManager.getGroup(1)) {
-        o->render();
-    }
 
     SDL_RenderPresent(global.renderer);
 }

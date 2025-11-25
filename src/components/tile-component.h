@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include "character/entity.h"
+#include "component.h"
 #include "util/vector2d.h"
 
 class TileComponent : public Component {

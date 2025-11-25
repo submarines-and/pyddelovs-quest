@@ -18,8 +18,6 @@ BIN = bin
 
 clean:
 	rm -rf $(BIN) $(OBJ)
-
-dirs:
 	mkdir -p ./$(BIN)
 
 install:
@@ -36,10 +34,11 @@ install:
 	cp lib/sdl-mixer/include/SDL_mixer.h lib/sdl/include/SDL_mixer.h
 
 build: $(OBJ)
+	mkdir -p ./$(BIN)
 	echo " $(OBJ)"
 	clang++ -o $(BIN)/game $^ $(LDFLAGS) -v
 
-start: clean dirs build
+start: clean build
 	$(BIN)/game
 
 

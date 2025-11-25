@@ -3,7 +3,7 @@
 #include <map>
 #include "transform-component.h"
 #include "gfx/animation.h"
-#include "character/entity.h"
+#include "component.h"
 
 class SpriteComponent : public Component {
 private:

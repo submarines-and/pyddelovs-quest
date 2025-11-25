@@ -9,7 +9,6 @@ Entity* Pyddelov::createPyddelov(int startX, int startY)
 {
     auto& player(global.entityManager.addEntity());
 
-    // place player in passabel terrain
     player.addComponent<TransformComponent>(startX, startY);
     player.addComponent<SpriteComponent>("assets/pyddelov.png", 4, 100);
     player.addComponent<KeyboardComponent>();
