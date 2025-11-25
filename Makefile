@@ -1,7 +1,7 @@
 UNAME_S = $(shell uname -s)
 
 CPPFLAGS = --std=c++17 
-LDFLAGS =  -lSDL2 -lSDL2_image -lSDL2_mixer  -lm
+LDFLAGS =  -lSDL2 -lSDL2_image -lSDL2_mixer
 
 # GLFW required frameworks on OSX
 ifeq ($(UNAME_S), Darwin)
