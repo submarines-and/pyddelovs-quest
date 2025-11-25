@@ -2,7 +2,7 @@
 #include <string>
 #include "SDL2/SDL.h"
 
-#include "ecs.h"
+#include "../ecs.h"
 #include "transform-component.h"
 #include "../game.h"
 

@@ -1,5 +1,5 @@
 #include "map.h"
-#include "ecs/tile-component.h"
+#include "components/tile-component.h"
 
 /** Will be populated by the generate function*/
 std::vector<TilePlacement> Map::tiles;
