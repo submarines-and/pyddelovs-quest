@@ -72,25 +72,18 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     }
 
     // place player in passabel terrain
-    bool placed = false;
     for (int i = Map::tiles.size() / 2; i < Map::tiles.size(); i++) {
-        if (placed) {
+        auto tile = Map::tiles[i];
+
+        // place on the first found grass tile
+        if (tile.typeId == TileComponent::GRASS) {
+            player.addComponent<TransformComponent>(tile.x, tile.y);
+            player.addComponent<SpriteComponent>("assets/pyddelov.png", 4, 100);
+            player.addComponent<KeyboardComponent>();
+            player.addComponent<CollisionComponent>("player");
+            player.addGroup(PLAYER);
             break;
         }
-
-        // place on a grass tile
-        auto tile = Map::tiles[i];
-        if (tile.typeId == TileComponent::GRASS) {
-            placed = true;
-        }
-    }
-
-    if (placed) {
-        player.addComponent<TransformComponent>(windowSize.w / 2, windowSize.h / 2);
-        player.addComponent<SpriteComponent>("assets/pyddelov.png", 4, 100);
-        player.addComponent<KeyboardComponent>();
-        player.addComponent<CollisionComponent>("player");
-        player.addGroup(PLAYER);
     }
 
     // start music
@@ -114,7 +107,7 @@ void Game::handleEvents()
 void Game::update()
 {
     // position before updates
-    auto playerPosition = player.getComponent<TransformComponent>().position;
+    auto playerTransform = player.getComponent<TransformComponent>();
 
     manager.refresh();
     manager.update();
@@ -131,8 +124,8 @@ void Game::update()
             }
 
             if (SDL_HasIntersection(&playerCollision.collider, &c->collider)) {
-                soundManager.playSoundEffect("sound/character/bounce.wav");
-                player.getComponent<TransformComponent>().position = playerPosition;
+                //     soundManager.playSoundEffect("sound/character/bounce.wav");
+                player.getComponent<TransformComponent>().position = playerTransform.position;
                 break;
             }
         }
