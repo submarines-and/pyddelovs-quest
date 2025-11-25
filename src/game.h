@@ -18,8 +18,10 @@ public:
 
     bool running() { return isRunning; }
 
+    // Global renderer
+    static SDL_Renderer *renderer;
+
 private:
     bool isRunning;
     SDL_Window *window;
-    SDL_Renderer *renderer;
 };

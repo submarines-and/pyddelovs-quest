@@ -2,15 +2,19 @@
 #include "texture-manager.h"
 #include "entity.h"
 
+
+Entity *pyddelov;
+SDL_Renderer* Game::renderer = nullptr;
+
 Game::Game()
 {
 }
 
 Game::~Game()
 {
-}
+} 
 
-Entity *pyddelov;
+
 
 void Game::init(const char *title, int x, int y, int width, int height, bool fullscreen)
 {
@@ -34,7 +38,7 @@ void Game::init(const char *title, int x, int y, int width, int height, bool ful
     }
 
     // load pyddelov
-    pyddelov = new Entity("assets/pyddelov.png", renderer);
+    pyddelov = new Entity("assets/pyddelov.png", 100, 100);
 }
 
 void Game::handleEvents()
