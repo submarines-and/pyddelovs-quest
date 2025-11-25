@@ -77,7 +77,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         }
     }
 
-    player.addComponent<SpriteComponent>("assets/pyddelov-ss.png", 2, 100);
+    player.addComponent<SpriteComponent>("assets/pyddelov-ss.png", 4, 100);
     player.addComponent<KeyboardComponent>();
     player.addComponent<CollisionComponent>("player");
     player.addGroup(PLAYER);
