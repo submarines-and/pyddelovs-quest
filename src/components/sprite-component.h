@@ -3,7 +3,6 @@
 #include <map>
 #include "util/entity-manager.h"
 #include "transform-component.h"
-#include "gfx/texture-manager.h"
 #include "animation-component.h"
 #include "global.h"
 
@@ -55,7 +54,7 @@ public:
 
     void setTexture(const char* filepath)
     {
-        texture = TextureManager::loadTexture(filepath);
+        texture = global.textureManager.loadTexture(filepath);
     }
 
     void init() override
@@ -83,7 +82,7 @@ public:
 
     void render() override
     {
-        TextureManager::render(texture, srcRect, destRect, spriteFlipped);
+        global.textureManager.render(texture, srcRect, destRect, spriteFlipped);
     }
 
     void playAnimation(const char* animationName)
