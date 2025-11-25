@@ -3,6 +3,9 @@
 
 #include "components/transform.h"
 #include "components/sprite.h"
+
+#include "entities/void-bolt.h"
+
 #include "ecs/system.h"
 #include "global.h"
 
@@ -41,6 +44,10 @@ public:
                 case SDLK_d:
                 case SDLK_RIGHT:
                     transform.direction.x = 1;
+                    break;
+
+                case SDLK_SPACE:
+                    VoidBolt::create(transform.position.x, transform.position.y);
                     break;
 
                 default:

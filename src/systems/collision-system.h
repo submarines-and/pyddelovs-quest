@@ -27,12 +27,13 @@ public:
                     global.ecs->destroyEntity(e);
                     break;
                 }
-
-                // global.sound.playSoundEffect("sound/rock.wav");
-
-                playerTransform.position.x -= playerTransform.direction.x * playerTransform.speed * deltaTime;
-                playerTransform.position.y -= playerTransform.direction.y * playerTransform.speed * deltaTime;
-                break;
+                else if (collision.damage != 0) {
+                }
+                else {
+                    // global.sound.playSoundEffect("sound/rock.wav");
+                    playerTransform.position.x -= playerTransform.direction.x * playerTransform.speed * deltaTime;
+                    playerTransform.position.y -= playerTransform.direction.y * playerTransform.speed * deltaTime;
+                }
             }
         }
     }
