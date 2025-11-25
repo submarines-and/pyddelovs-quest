@@ -9,7 +9,6 @@
 
 #include "map.h"
 #include "vector2d.h"
-#include "collision.h"
 
 Manager manager;
 SDL_Renderer* Game::renderer = nullptr;
@@ -107,13 +106,14 @@ void Game::update()
 
     for (auto c : colliders) {
 
-        // cant collide with itself
+        // player cant collide with self
         if (playerCollision.tag == c->tag) {
             continue;
         }
 
-        if (Collision::isColliding(playerCollision, *c)) {
+        if (SDL_HasIntersection(&playerCollision.collider, &c->collider)) {
             player.getComponent<TransformComponent>().velocity * -1;
+            break;
         }
     }
 }
