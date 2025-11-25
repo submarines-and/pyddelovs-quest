@@ -1,5 +1,6 @@
 #include "game.h"
 #include "texture-manager.h"
+#include "sound-manager.h"
 #include "ecs.h"
 #include "components/transform-component.h"
 #include "components/sprite-component.h"
@@ -14,6 +15,7 @@
 Manager manager;
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
+SoundManager soundManager;
 
 std::vector<CollisionComponent*> Game::colliders;
 
@@ -84,6 +86,9 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         player.addComponent<CollisionComponent>("player");
         player.addGroup(PLAYER);
     }
+
+    // start music
+    soundManager.playMusic("sound/forest.mp3");
 }
 
 void Game::handleEvents()
