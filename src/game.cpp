@@ -54,7 +54,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         isRunning = false;
     }
 
-    Map::generate(width, height);
+    Map::generate(width * 2, height * 2);
     for (auto t : Map::tiles) {
         auto& tile(manager.addEntity());
         tile.addComponent<TileComponent>(t.x, t.y, 32, 32, t.typeId);
@@ -113,8 +113,30 @@ void Game::handleEvents()
 
 void Game::update()
 {
+    // position before updates
+    auto playerPosition = player.getComponent<TransformComponent>().position;
+
     manager.refresh();
     manager.update();
+
+    // bounce on collision
+    if (player.hasComponent<CollisionComponent>()) {
+        auto playerCollision = player.getComponent<CollisionComponent>();
+
+        for (auto c : colliders) {
+
+            // player cant collide with self
+            if (playerCollision.tag == c->tag) {
+                continue;
+            }
+
+            if (SDL_HasIntersection(&playerCollision.collider, &c->collider)) {
+                soundManager.playSoundEffect("sound/character/bounce.wav");
+                player.getComponent<TransformComponent>().position = playerPosition;
+                break;
+            }
+        }
+    }
 
     camera.x = player.getComponent<TransformComponent>().position.x - windowSize.w / 2;
     camera.y = player.getComponent<TransformComponent>().position.y - windowSize.h / 2;
@@ -131,25 +153,6 @@ void Game::update()
     }
     if (camera.y > camera.h) {
         camera.y = camera.h;
-    }
-
-    // bounce on collision
-    if (player.hasComponent<CollisionComponent>()) {
-        auto playerCollision = player.getComponent<CollisionComponent>();
-
-        for (auto c : colliders) {
-
-            // player cant collide with self
-            if (playerCollision.tag == c->tag) {
-                continue;
-            }
-
-            if (SDL_HasIntersection(&playerCollision.collider, &c->collider)) {
-                //   player.getComponent<TransformComponent>().velocity * -1;
-                //   soundManager.playSoundEffect("sound/character/bounce.wav");
-                break;
-            }
-        }
     }
 }
 
