@@ -63,7 +63,20 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         }
     }
 
-    player.addComponent<TransformComponent>(100.0f, 100.0f);
+    // place player in passabel terrain
+    bool placed = false;
+    for (int i = Map::tiles.size() / 4; i < Map::tiles.size(); i++) {
+        if (placed) {
+            break;
+        }
+
+        auto tile = Map::tiles[i];
+        if (tile.typeId == TileComponent::GRASS) {
+            player.addComponent<TransformComponent>(tile.x, tile.y);
+            placed = true;
+        }
+    }
+
     player.addComponent<SpriteComponent>("assets/pyddelov.png");
     player.addComponent<KeyboardComponent>();
     player.addComponent<CollisionComponent>("player");
