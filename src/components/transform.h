@@ -3,7 +3,7 @@
 
 struct Transform {
     Vector2d position;
-    Vector2d velocity;
+    Vector2d direction;
 
     int height = 32;
     int width = 32;

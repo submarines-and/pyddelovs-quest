@@ -16,19 +16,10 @@
 static Global global_instance;
 Global& global = global_instance;
 
-void init(const char* title, int x, int y, int width, int height, bool fullscreen)
-{
-}
-
 int main()
 {
-    const int fps = 60;
-    const int frameDelay = 1000 / fps;
     const int width = 1280;
     const int height = 1280;
-
-    Uint32 frameStart;
-    int frameTime;
 
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
         global.window = SDL_CreateWindow("Pyddelovs Quest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
@@ -86,7 +77,7 @@ int main()
     global.ecs->addComponent(player, Player{});
     global.ecs->addComponent(player, Transform{
                                          .position = Vector2d(freeTile.x, freeTile.y),
-                                         .speed = 2,
+                                         .speed = 200,
                                      });
     global.ecs->addComponent(player, Sprite{
                                          .filepath = "assets/pyddelov.png",
@@ -100,20 +91,24 @@ int main()
                                      });
 
     // main loop
-    while (!SDL_QuitRequested()) {
-        frameStart = SDL_GetTicks();
+    const int fps = 1000 / 60;
+    int delta = 0;
 
+    while (!SDL_QuitRequested()) {
+        int start = SDL_GetTicks();
+
+        /** Player position before updates*/
         auto playerTransform = global.ecs->getComponent<Transform>(player);
 
         keyboardSystem->update();
-        transformSystem->update(playerTransform.position);
-        collisionSystem->update(player, playerTransform);
+        transformSystem->update(playerTransform.position, float(delta / 1000.0f));
+        collisionSystem->update(player, playerTransform, float(delta / 1000.0f));
         spriteSystem->update();
 
-        frameTime = SDL_GetTicks() - frameStart;
+        delta = SDL_GetTicks() - start;
 
-        if (frameDelay > frameTime) {
-            SDL_Delay(frameDelay - frameTime);
+        if (delta < fps) {
+            SDL_Delay(fps - delta);
         }
     }
 

@@ -20,7 +20,7 @@ public:
         cameraPosition = {0, 0, width, height};
     }
 
-    void update(Vector2d playerPosition)
+    void update(Vector2d playerPosition, float deltaTime)
     {
         cameraPosition.x = playerPosition.x - windowSize.w / 2;
         cameraPosition.y = playerPosition.y - windowSize.h / 2;
@@ -42,8 +42,8 @@ public:
         for (auto e : entities) {
             auto& transform = global.ecs->getComponent<Transform>(e);
 
-            transform.position.x += transform.velocity.x * transform.speed - cameraPosition.x;
-            transform.position.y += transform.velocity.y * transform.speed - cameraPosition.y;
+            transform.position.x += transform.direction.x * deltaTime * transform.speed - cameraPosition.x;
+            transform.position.y += transform.direction.y * deltaTime * transform.speed - cameraPosition.y;
         }
     }
 };
