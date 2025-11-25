@@ -64,3 +64,18 @@ Vector2d& Vector2d::operator*=(const Vector2d vec) {
 Vector2d& Vector2d::operator/=(const Vector2d vec) {
     return this->divide(vec);
 }
+
+Vector2d& Vector2d::operator*(const int& i) {
+    this->x *= i;
+    this->y *= i;
+
+    return *this;
+}
+
+/** Set vector to 0*/
+Vector2d& Vector2d::zero() {
+    this->x = 0;
+    this->y = 0;
+
+    return *this;
+}

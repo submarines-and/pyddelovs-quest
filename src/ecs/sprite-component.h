@@ -29,16 +29,19 @@ public:
         srcRect.x = srcRect.y = 0;
         destRect.x = destRect.y = 0;
 
-        srcRect.w = (int)transform->width;
-        srcRect.h = (int)transform->height;
+        srcRect.w = transform->width;
+        srcRect.h = transform->height;
 
         destRect.w = srcRect.w * transform->scale;
         destRect.h = srcRect.h * transform->scale;
     }
 
     void update() override {
-        destRect.x = (int)transform->position.x;
-        destRect.y = (int)transform->position.y;
+        destRect.x = static_cast<int>(transform->position.x);
+        destRect.y = static_cast<int>(transform->position.y);
+
+        destRect.w = transform->width * transform->scale;
+        destRect.h = transform->height * transform->scale;
     }
 
     void render() override {
