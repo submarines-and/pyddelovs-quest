@@ -1,7 +1,13 @@
 # Pyddelovs Quest
-You are a small, cold fox and the graphics are very confusing. Will you make it home to your den before it is too late?
+You are a small, cold fox and the graphics are very confusing. Will you collect all treasures before you get eaten?
 
 <img src="./assets/pyddelov.png" width="150"/>
+
+
+## Gamplay
+Collect shells, flowers, and bread to gain points. Krabban klo will spawn every few items collected and chase you until death. For defense, you can press space to fire a void bolt, destroying anything in its path.
+
+<img src="./gameplay.png" />
 
 
 
