@@ -1,4 +1,5 @@
 #include "game.h"
+#include "texture-manager.h"
 
 SDL_Texture *playerTexture;
 SDL_Rect srcRect, destRect;
@@ -33,9 +34,7 @@ void Game::init(const char *title, int x, int y, int width, int height, bool ful
     }
 
     // load pyddelov
-    SDL_Surface *surface = IMG_Load("assets/pyddelov.png");
-    playerTexture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
+    playerTexture = TextureManager::loadTexture("assets/pyddelov.png", renderer);
 }
 
 void Game::handleEvents()
