@@ -5,18 +5,33 @@ class TransformComponent : public Component {
 public:
     Vector2d position;
     Vector2d velocity;
+
+    int height = 32;
+    int width = 32;
+    int scale = 1;
+
+    /** Arbitrary */
     int speed = 3;
 
     /** If no size specified*/
     TransformComponent() {
-        position.x = 0;
-        position.y = 0;
+        position.x = 0.0f;
+        position.y = 0.0f;
     }
 
-    /** Custom size */
+    /** Custom position */
     TransformComponent(float x, float y) {
         position.x = x;
         position.y = y;
+    }
+
+    /** Custom position AND size */
+    TransformComponent(float x, float y, int w, int h, int sc) {
+        position.x = x;
+        position.y = y;
+        width = w;
+        height = h;
+        scale = sc;
     }
 
     void init() override {

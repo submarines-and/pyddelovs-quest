@@ -84,7 +84,7 @@ public:
     /** Is component still attached? */
     template <typename T>
     bool hasComponent() const {
-        return componentBitSet[getComponentTypeId<T>];
+        return componentBitSet[getComponentTypeId<T>()];
     }
 
     /** Returns reference to T (so it can be added to array)*/
