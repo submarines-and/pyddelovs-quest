@@ -73,13 +73,12 @@ public:
     {
         for (auto &c : components)
             c->update();
-
-        for (auto &c : components)
-            c->render();
     }
 
     void render()
     {
+        for (auto &c : components)
+            c->render();
     }
 
     /** Is this entity still active*/

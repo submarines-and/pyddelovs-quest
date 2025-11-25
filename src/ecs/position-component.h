@@ -7,14 +7,24 @@ private:
     int xPos, yPos;
 
 public:
-    int x() { return xPos; }
-    int y() { return yPos; }
-
-    void init() override
+    /** If no size specified*/
+    PositionComponent()
     {
         xPos = 0;
         yPos = 0;
     }
+
+    /** Custom size */
+    PositionComponent(int x, int y)
+    {
+        xPos = x;
+        yPos = y;
+    }
+
+    int x() { return xPos; }
+    int y() { return yPos; }
+
+    void init() override {}
 
     void update() override
     {

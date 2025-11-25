@@ -69,15 +69,15 @@ void Map::render()
 
             default:
             case WATER:
-                TextureManager::draw(water, src, dest);
+                TextureManager::render(water, src, dest);
                 break;
 
             case GRASS:
-                TextureManager::draw(grass, src, dest);
+                TextureManager::render(grass, src, dest);
                 break;
 
             case DIRT:
-                TextureManager::draw(dirt, src, dest);
+                TextureManager::render(dirt, src, dest);
                 break;
             }
         }

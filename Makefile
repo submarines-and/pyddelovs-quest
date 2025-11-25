@@ -16,7 +16,7 @@ SRC  = $(wildcard src/**/*.cpp) $(wildcard src/*.cpp) $(wildcard src/**/**/*.cpp
 OBJ  = $(SRC:.cpp=.o)
 BIN = bin
 
-all: dirs build
+all: clean dirs build
 
 clean:
 	rm -rf $(BIN) $(OBJ)
