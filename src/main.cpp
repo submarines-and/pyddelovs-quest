@@ -31,7 +31,7 @@ void init(const char* title, int x, int y, int width, int height, bool fullscree
     player.addComponent<TransformComponent>(width / 2, height / 2);
     player.addComponent<SpriteComponent>("assets/pyddelov.png", 4, 100);
     player.addComponent<KeyboardComponent>();
-    player.addComponent<CollisionComponent>("player");
+    player.addComponent<CollisionComponent>();
 
     // start music
     global.soundManager.playMusic("sound/music/forest.mp3");

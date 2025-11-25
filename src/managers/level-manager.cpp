@@ -1,7 +1,7 @@
 #include "level-manager.h"
 #include "components/tile-component.h"
 #include "components/collision-component.h"
-
+#include "global.h"
 
 /** Generate noise map with tiles */
 std::vector<TilePlacement> LevelManager::generateTiles(int width, int height)

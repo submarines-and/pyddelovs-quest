@@ -1,9 +1,9 @@
 {
   "files.exclude": {
-    "*/**/*.o": true,
-    "*/**/*.log": true,
     "lib": true,
     "bin": true,
-    "*.tmp": true,
+    "*/**/*.tmp": true,
+    "*/**/*.o": true,
+    "*/**/*.log": true,
   }
 }
