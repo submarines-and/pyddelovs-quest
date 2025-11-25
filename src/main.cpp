@@ -5,14 +5,14 @@
 #include "components/keyboard-component.h"
 #include "components/collision-component.h"
 #include "components/tile-component.h"
-#include "level/map.h"
+#include "level/level.h"
 #include "util/vector2d.h"
 #include "util/camera.h"
 #include "util/entity-manager.h"
 
 /** Init global state and make accessible for main function. */
 static Global global_instance;
-Global &global = global_instance;
+Global& global = global_instance;
 
 std::vector<CollisionComponent*> colliders;
 auto& player(global.entityManager.addEntity());
@@ -22,7 +22,6 @@ enum GroupLabel {
     PLAYER,
     ENEMY
 };
-
 
 void init(const char* title, int x, int y, int width, int height, bool fullscreen)
 {
@@ -65,20 +64,12 @@ void init(const char* title, int x, int y, int width, int height, bool fullscree
     }
 
     // place player in passabel terrain
-    printf("Add player...");
-    for (int i = Map::tiles.size() / 2; i < Map::tiles.size(); i++) {
-        auto tile = Map::tiles[i];
-
-        // place on the first found grass tile
-        if (tile.typeId == TileComponent::GRASS) {
-            player.addComponent<TransformComponent>(tile.x, tile.y);
-            player.addComponent<SpriteComponent>("assets/pyddelov.png", 4, 100);
-            player.addComponent<KeyboardComponent>();
-            player.addComponent<CollisionComponent>("player");
-            player.addGroup(PLAYER);
-            break;
-        }
-    }
+    printf("Add pyddelov...");
+    player.addComponent<TransformComponent>(width / 2, height / 2);
+    player.addComponent<SpriteComponent>("assets/pyddelov.png", 4, 100);
+    player.addComponent<KeyboardComponent>();
+    player.addComponent<CollisionComponent>("player");
+    player.addGroup(PLAYER);
 
     // start music
     global.soundManager.playMusic("sound/music/forest.mp3");
