@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+            ],
+            "compilerPath": "/usr/bin/clang++",
+            "cStandard": "c17",
+            "cppStandard": "c++98",
+            "intelliSenseMode": "macos-clang-x64",
+            "compilerArgs": [
+                "-Ilib/sdl/build/include",
+                "-Ilib/sdl-image",
+                "--std=c++17"
+            ]
+        }
+    ],
+    "version": 4
+}
