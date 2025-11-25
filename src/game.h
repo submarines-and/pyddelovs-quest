@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <vector>
+#include "camera.h"
 
 class CollisionComponent;
 
@@ -23,9 +24,7 @@ public:
     /** Global renderer */
     static SDL_Renderer* renderer;
     static SDL_Event event;
-
-    /** Camera is just a rectangle */
-    static SDL_Rect camera;
+    static Camera camera;
 
     /** All collidable objects */
     static std::vector<CollisionComponent*> colliders;
@@ -33,6 +32,5 @@ public:
 private:
     bool isRunning;
     SDL_Window* window;
-    static SDL_Rect windowSize;
 
 };
