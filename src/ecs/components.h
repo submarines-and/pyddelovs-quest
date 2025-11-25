@@ -1,3 +1,3 @@
 #pragma once
-#include "position-component.h"
+#include "transform-component.h"
 #include "sprite-component.h"

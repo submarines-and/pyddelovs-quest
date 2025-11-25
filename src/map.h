@@ -1,26 +1,24 @@
 #pragma once
 #include "game.h"
 
-class Map
-{
+class Map {
 public:
-    Map();
-    ~Map();
+  Map();
+  ~Map();
 
-    /** Available types */
-    enum TextureType
-    {
-        WATER,
-        GRASS,
-        DIRT,
-    };
+  /** Available types */
+  enum TextureType {
+    WATER,
+    GRASS,
+    DIRT,
+  };
 
-    void load(int mapArray[20][25]);
-    void render();
+  void load(int mapArray[20][25]);
+  void render();
 
 private:
-    SDL_Rect src, dest;
-    SDL_Texture *dirt, *grass, *water;
+  SDL_Rect src, dest;
+  SDL_Texture *dirt, *grass, *water;
 
-    int currentMap[20][25];
+  int currentMap[20][25];
 };

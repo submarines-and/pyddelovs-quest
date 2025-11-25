@@ -1,21 +1,21 @@
 #pragma once
 #include "ecs.h"
 
-class PositionComponent : public Component
+class TransformComponent : public Component
 {
 private:
     int xPos, yPos;
 
 public:
     /** If no size specified*/
-    PositionComponent()
+    TransformComponent()
     {
         xPos = 0;
         yPos = 0;
     }
 
     /** Custom size */
-    PositionComponent(int x, int y)
+    TransformComponent(int x, int y)
     {
         xPos = x;
         yPos = y;
