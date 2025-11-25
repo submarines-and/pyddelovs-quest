@@ -11,9 +11,12 @@ TileComponent::TileComponent(int x, int y, int w, int h, int tileId)
     // sprite sheets are always 32x32
     srcRect.w = srcRect.h = 32;
 
-    int spriteRows = 3;
-    srcRect.x = (tileId % spriteRows) * w;
-    srcRect.y = (tileId / spriteRows) * h;
+    // int spriteRows = 3;
+    // srcRect.x = (tileId % spriteRows) * w;
+    // srcRect.y = (tileId / spriteRows) * h;
+
+    srcRect.x = tileId * w;
+    srcRect.y = 0;
 
     destRect.w = w;
     destRect.h = h;

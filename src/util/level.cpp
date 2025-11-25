@@ -14,7 +14,7 @@ std::vector<TilePlacement> Level::generateTiles(int width, int height)
 
     srand((unsigned int)time(NULL));
 
-    float* seed = new float[width * height * 345354 * 345345];
+    float* seed = new float[width * height * 34354 * 11633];
     for (int i = 0; i < width * height; i++) {
         seed[i] = (float)rand() / (float)RAND_MAX;
     }
@@ -65,11 +65,17 @@ std::vector<TilePlacement> Level::generateTiles(int width, int height)
             if (tileValue < 0.1) {
                 tile.typeId = TileComponent::SNOW;
             }
-            else if (tileValue < 0.2) {
+            else if (tileValue < 0.27) {
                 tile.typeId = TileComponent::ROCK;
             }
-            else if (tileValue < 0.5) {
+            else if (tileValue < 0.56) {
                 tile.typeId = TileComponent::GRASS;
+            }
+            else if (tileValue < 0.58) {
+                tile.typeId = TileComponent::FLOWER;
+            }
+            else if (tileValue < 0.6) {
+                tile.typeId = TileComponent::TREE;
             }
             else if (tileValue < 0.7) {
                 tile.typeId = TileComponent::SAND;

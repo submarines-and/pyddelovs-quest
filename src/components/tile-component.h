@@ -12,10 +12,12 @@ public:
     /** Available tile types */
     enum TileType {
         GRASS,
-        ROCK,
         WATER,
         SAND,
-        SNOW
+        ROCK,
+        SNOW,
+        TREE,
+        FLOWER,
     };
 
     TileComponent() = default;
