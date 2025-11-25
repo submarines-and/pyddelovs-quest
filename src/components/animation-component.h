@@ -3,7 +3,7 @@
 struct Animation {
     int index;
     int frames;
-    int speed;
+    int animationSpeed;
 
     Animation() = default;
 
@@ -11,6 +11,6 @@ struct Animation {
     {
         index = i;
         frames = f;
-        speed = s;
+        animationSpeed = s;
     };
 };

@@ -15,6 +15,9 @@ SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 SoundManager soundManager;
 
+SDL_Rect Game::camera;
+SDL_Rect Game::windowSize;
+
 std::vector<CollisionComponent*> Game::colliders;
 
 auto& player(manager.addEntity());
@@ -24,12 +27,17 @@ enum GroupLabel {
     PLAYER,
     ENEMY
 };
+auto& playerGroup(manager.getGroup(PLAYER));
+auto& terrainGroup(manager.getGroup(TERRAIN));
 
 Game::Game() {}
 Game::~Game() {}
 
 void Game::init(const char* title, int x, int y, int width, int height, bool fullscreen)
 {
+    windowSize = {0, 0, width, height};
+    camera = {0, 0, width, height};
+
     int flags = 0;
     if (fullscreen) {
         flags = SDL_WINDOW_FULLSCREEN;
@@ -49,8 +57,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     Map::generate(width, height);
     for (auto t : Map::tiles) {
         auto& tile(manager.addEntity());
-        tile.addComponent<TileComponent>(t.x, t.y, t.typeId);
-        tile.addComponent<TransformComponent>(t.x, t.y, 32, 32, 0, 1);
+        tile.addComponent<TileComponent>(t.x, t.y, 32, 32, t.typeId);
         tile.addGroup(TERRAIN);
 
         switch (t.typeId) {
@@ -74,12 +81,12 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         // place on a grass tile
         auto tile = Map::tiles[i];
         if (tile.typeId == TileComponent::GRASS) {
-            player.addComponent<TransformComponent>(tile.x, tile.y);
             placed = true;
         }
     }
 
     if (placed) {
+        player.addComponent<TransformComponent>(windowSize.w / 2, windowSize.h / 2);
         player.addComponent<SpriteComponent>("assets/pyddelov.png", 4, 100);
         player.addComponent<KeyboardComponent>();
         player.addComponent<CollisionComponent>("player");
@@ -109,6 +116,23 @@ void Game::update()
     manager.refresh();
     manager.update();
 
+    camera.x = player.getComponent<TransformComponent>().position.x - windowSize.w / 2;
+    camera.y = player.getComponent<TransformComponent>().position.y - windowSize.h / 2;
+
+    // check bounds
+    if (camera.x < 0) {
+        camera.x = 0;
+    }
+    if (camera.y < 0) {
+        camera.y = 0;
+    }
+    if (camera.x > camera.w) {
+        camera.x = camera.w;
+    }
+    if (camera.y > camera.h) {
+        camera.y = camera.h;
+    }
+
     // bounce on collision
     if (player.hasComponent<CollisionComponent>()) {
         auto playerCollision = player.getComponent<CollisionComponent>();
@@ -121,16 +145,13 @@ void Game::update()
             }
 
             if (SDL_HasIntersection(&playerCollision.collider, &c->collider)) {
-                player.getComponent<TransformComponent>().velocity * -1;
-                soundManager.playSoundEffect("sound/character/bounce.wav");
+                //   player.getComponent<TransformComponent>().velocity * -1;
+                //   soundManager.playSoundEffect("sound/character/bounce.wav");
                 break;
             }
         }
     }
 }
-
-auto& terrainGroup(manager.getGroup(TERRAIN));
-auto& playerGroup(manager.getGroup(PLAYER));
 
 void Game::render()
 {

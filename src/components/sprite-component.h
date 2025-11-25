@@ -19,7 +19,7 @@ private:
 public:
     int animationIndex = 0;
     int frames = 0;
-    int speed = 100;
+    int animationSpeed = 100;
 
     /** If sprite is flipped */
     SDL_RendererFlip spriteFlipped = SDL_FLIP_NONE;
@@ -70,15 +70,15 @@ public:
     void update() override
     {
         if (animated) {
-            srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+            srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / animationSpeed) % frames);
             srcRect.y = animationIndex * transform->height;
         }
 
-        destRect.x = static_cast<int>(transform->position.x);
-        destRect.y = static_cast<int>(transform->position.y);
+        destRect.x = static_cast<int>(transform->position.x) - Game::camera.x;
+        destRect.y = static_cast<int>(transform->position.y) - Game::camera.y;
 
-        destRect.w = transform->width * transform->scale;
-        destRect.h = transform->height * transform->scale;
+        destRect.w = transform->width;
+        destRect.h = transform->height;
     }
 
     void render() override
@@ -90,6 +90,6 @@ public:
     {
         animationIndex = animations[animationName].index;
         frames = animations[animationName].frames;
-        speed = animations[animationName].speed;
+        animationSpeed = animations[animationName].animationSpeed;
     }
 };

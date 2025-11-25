@@ -9,7 +9,6 @@ public:
 
     int height = 32;
     int width = 32;
-    int scale = 1;
     int speed = 2;
 
     /** If no size specified*/
@@ -34,14 +33,13 @@ public:
     }
 
     /** Custom position AND speed AND size */
-    TransformComponent(float x, float y, int w, int h, int s, int sc)
+    TransformComponent(float x, float y, int w, int h, int s)
     {
         position.x = x;
         position.y = y;
         width = w;
         height = h;
         speed = s;
-        scale = sc;
     }
 
     void init() override
