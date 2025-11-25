@@ -1,10 +1,12 @@
 #include "global.h"
 
+#include "components/ai.h"
 #include "components/collision.h"
 #include "components/player.h"
 #include "components/transform.h"
 #include "components/sprite.h"
 
+#include "systems/ai-system.h"
 #include "systems/collision-system.h"
 #include "systems/keyboard-system.h"
 #include "systems/sprite-system.h"
@@ -32,10 +34,11 @@ int main()
     global.ecs->init();
 
     // register all components
-    global.ecs->registerComponent<Player>();
-    global.ecs->registerComponent<Transform>();
-    global.ecs->registerComponent<Sprite>();
+    global.ecs->registerComponent<AI>();
     global.ecs->registerComponent<Collision>();
+    global.ecs->registerComponent<Player>();
+    global.ecs->registerComponent<Sprite>();
+    global.ecs->registerComponent<Transform>();
 
     auto spriteSystem = global.ecs->registerSystem<SpriteSystem>();
     {
@@ -68,11 +71,27 @@ int main()
         global.ecs->setSystemSignature<KeyboardSystem>(signature);
     }
 
-    // create level
-    Level level = Level(width * 2, height * 2);
+    auto aiSystem = global.ecs->registerSystem<AISystem>();
+    {
+        Signature signature;
+        signature.set(global.ecs->getComponentType<AI>());
+        signature.set(global.ecs->getComponentType<Transform>());
+        global.ecs->setSystemSignature<AISystem>(signature);
+    }
+
+    /**
+     *
+     * LEvel
+     *
+     */
+    Level level = Level(width * 3, height * 3);
     auto freeTile = level.getFreeTile(width / 2, height / 2);
 
-    // create pyddelov
+    /**
+     *
+     * Pyddelov
+     *
+     */
     auto player = global.ecs->createEntity();
     global.ecs->addComponent(player, Player{});
     global.ecs->addComponent(player, Transform{
@@ -90,6 +109,28 @@ int main()
                                          .frames = 3,
                                      });
 
+    /**
+     *
+     * Krabban klo
+     *
+     */
+    auto krabbanKlo = global.ecs->createEntity();
+    global.ecs->addComponent(krabbanKlo, AI{});
+    global.ecs->addComponent(krabbanKlo, Transform{
+                                             .position = Vector2d(freeTile.x * 2, freeTile.y * 2),
+                                             .speed = 1,
+                                         });
+    global.ecs->addComponent(krabbanKlo, Sprite{
+                                             .filepath = "assets/krabbanklo.png",
+                                             .src = {
+                                                 .x = 0,
+                                                 .y = 0,
+                                                 .h = 32,
+                                                 .w = 32,
+                                             },
+                                             .frames = 2,
+                                         });
+
     // main loop
     const int fps = 1000 / 60;
     int delta = 0;
@@ -101,6 +142,7 @@ int main()
         auto playerTransform = global.ecs->getComponent<Transform>(player);
 
         keyboardSystem->update();
+        aiSystem->update(playerTransform.position);
         transformSystem->update(playerTransform.position);
         collisionSystem->update(player, playerTransform);
         spriteSystem->update();

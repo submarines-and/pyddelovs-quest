@@ -24,4 +24,6 @@ public:
 
     Vector2d& operator*(const int& i);
     Vector2d& zero();
+
+    Vector2d& normalize();
 };
