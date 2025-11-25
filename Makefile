@@ -26,10 +26,14 @@ install:
 	git submodule deinit -f . && git submodule update --init
 	git update-index --assume-unchanged lib/sdl
 	git update-index --assume-unchanged lib/sdl-image
+	git update-index --assume-unchanged lib/sdl-mixer
 
 	cd lib/sdl && git checkout SDL2 && ./configure && make && make install
 	cd lib/sdl-image && ./configure && make && make install
+	cd lib/sdl-mixer && ./configure && make && make install
+
 	cp lib/sdl-image/SDL_image.h lib/sdl/include/SDL_image.h
+	cp lib/sdl-mixer/includes/SDL_mixer.h lib/sdl/include/SDL_mixer.h
 
 build: $(OBJ)
 	clang++ -o $(BIN)/game $^ $(LDFLAGS) -v
