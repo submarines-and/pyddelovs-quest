@@ -1,4 +1,7 @@
-#include "game.h";
+#include "game.h"
+
+SDL_Texture *playerTexture;
+SDL_Rect srcRect, destRect;
 
 Game::Game()
 {
@@ -28,6 +31,11 @@ void Game::init(const char *title, int x, int y, int width, int height, bool ful
     {
         isRunning = false;
     }
+
+    // load pyddelov
+    SDL_Surface *surface = IMG_Load("assets/pyddelov.png");
+    playerTexture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
 }
 
 void Game::handleEvents()
@@ -48,12 +56,15 @@ void Game::handleEvents()
 
 void Game::update()
 {
-    
+    destRect.h = 64;
+    destRect.w = 64;
 }
 
 void Game::render()
 {
     SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, playerTexture, NULL, &destRect);
+
     SDL_RenderPresent(renderer);
 }
 
