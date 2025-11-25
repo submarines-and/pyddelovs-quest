@@ -7,7 +7,6 @@
 #include "components/keyboard-component.h"
 #include "components/collision-component.h"
 #include "components/tile-component.h"
-
 #include "map.h"
 #include "vector2d.h"
 
@@ -122,6 +121,7 @@ void Game::update()
 
             if (SDL_HasIntersection(&playerCollision.collider, &c->collider)) {
                 player.getComponent<TransformComponent>().velocity * -1;
+                soundManager.playSoundEffect("sound/character/bounce.wav");
                 break;
             }
         }

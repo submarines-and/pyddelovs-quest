@@ -1,5 +1,4 @@
 #include "sound-manager.h"
-// https://lazyfoo.net/tutorials/SDL/21_sound_effects_and_music/index.php
 
 SoundManager::SoundManager()
 {
@@ -10,6 +9,11 @@ SoundManager::~SoundManager()
 {
     Mix_HaltMusic();
     Mix_FreeMusic(music);
+
+    for (auto s : sounds) {
+        Mix_FreeChunk(s.second);
+    }
+
     Mix_Quit();
 }
 
@@ -22,4 +26,28 @@ void SoundManager::playMusic(const char* filepath)
 
     music = Mix_LoadMUS(filepath);
     Mix_PlayMusic(music, -1);
+}
+
+/** Plays a sound effect*/
+void SoundManager::playSoundEffect(const char* filepath)
+{
+    Mix_Chunk* sound;
+
+    // check cache - load if missing
+    if (sounds.count(filepath)) {
+        sound = sounds[filepath];
+    }
+    else {
+        sound = Mix_LoadWAV(filepath);
+
+        if (sound == NULL) {
+            printf("Failed to load high sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+            return;
+        }
+
+        sounds.emplace(filepath, sound);
+    }
+
+    // play
+    Mix_PlayChannel(-1, sound, 0);
 }
