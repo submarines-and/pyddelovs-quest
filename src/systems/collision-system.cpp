@@ -4,6 +4,9 @@ void CollisionSystem::update()
 {
 
     /*
+        // position before updates
+        auto playerTransform = player.getComponent<TransformComponent>();
+
         // bounce on collision
         if (player.hasComponent<CollisionComponent>()) {
             auto playerCollision = player.getComponent<CollisionComponent>();
