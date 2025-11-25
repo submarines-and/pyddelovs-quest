@@ -5,6 +5,7 @@
 #include "character/entity.h"
 #include "util/level.h"
 #include "gfx/textures.h"
+#include "systems/collision.h"
 
 /** All globally available objects */
 struct Global {
@@ -18,6 +19,8 @@ struct Global {
     Textures textures;
 
     Entity* pyddelov;
+
+    Collision* collision;
 };
 
 /** Will be created by main.cpp */

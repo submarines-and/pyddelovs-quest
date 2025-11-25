@@ -1,4 +1,5 @@
 #include "collision-component.h"
+#include "global.h"
 
 void CollisionComponent::init()
 {
@@ -12,7 +13,7 @@ void CollisionComponent::init()
     transform = &entity->getComponent<TransformComponent>();
 
     // add to game, move to system??
-    //   Game::colliders.push_back(this);
+    global.collision->addCollider(this);
 }
 
 /** Update collider box size every frame*/
