@@ -16,12 +16,14 @@ public:
     /** Available tile types */
     enum TextureType {
         WATER,
-        DIRT,
+        ROCK,
         GRASS,
+        SAND,
     };
 
     TileComponent() = default;
-    TileComponent(int x, int y, int w, int h, int id) {
+    TileComponent(int x, int y, int w, int h, int id)
+    {
         tileRect.x = x;
         tileRect.y = y;
         tileRect.w = w;
@@ -35,8 +37,12 @@ public:
             filepath = "assets/water.png";
             break;
 
-        case DIRT:
-            filepath = "assets/dirt.png";
+        case ROCK:
+            filepath = "assets/rock.png";
+            break;
+
+        case SAND:
+            filepath = "assets/sand.png";
             break;
 
         case GRASS:
@@ -45,7 +51,8 @@ public:
         }
     }
 
-    void init() override {
+    void init() override
+    {
         entity->addComponent<TransformComponent>((float)tileRect.x, (float)tileRect.y, (float)tileRect.w, (float)tileRect.h, 1);
         transform = &entity->getComponent<TransformComponent>();
 

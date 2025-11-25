@@ -2,6 +2,7 @@
 #include "SDL2/SDL.h"
 #include "ecs.h"
 #include "transform-component.h"
+#include "../texture-manager.h"
 
 class SpriteComponent : public Component {
 private:

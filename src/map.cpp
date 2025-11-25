@@ -1,20 +1,22 @@
 #include "map.h"
 #include "game.h"
+#include <iostream>
+#include "ecs/tile-component.h"
 
 /** Generate noise map with tiles */
 void Map::generate(int width, int height)
 {
-    float* seed = new float[width * height];
-    for (int i = 0; i < width * height; i++) {
-        seed[i] = (float)rand() / (float)RAND_MAX;
-    }
-
-    float bias = 2.0f;
-    int octaves = 5;
+    int octaves = 4;
     int mapScale = 32;
 
     width /= mapScale;
     height /= mapScale;
+
+    srand((unsigned int)time(NULL));
+    float* seed = new float[width * height];
+    for (int i = 0; i < width * height; i++) {
+        seed[i] = (float)rand() / (float)RAND_MAX;
+    }
 
     float* perlinNoise = new float[width * height];
 
@@ -22,7 +24,7 @@ void Map::generate(int width, int height)
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
             float noise = 0.0f;
-            float scale = 1.0f;
+            float scale = 0.5f;
             float scaleAccumulated = 0.0f;
 
             for (int o = 0; o < octaves; o++) {
@@ -33,15 +35,14 @@ void Map::generate(int width, int height)
                 int sampleX2 = (sampleX1 + pitch) % width;
                 int sampleY2 = (sampleY1 + pitch) % width;
 
-                float fBlendX = (float)(x - sampleX1) / (float)pitch;
+                float blendX = (float)(x - sampleX1) / (float)pitch;
                 float blendY = (float)(y - sampleY1) / (float)pitch;
 
-                float sampleT = (1.0f - fBlendX) * seed[sampleY1 * width + sampleX1] + fBlendX * seed[sampleY1 * width + sampleX2];
-                float sampleB = (1.0f - fBlendX) * seed[sampleY2 * width + sampleX1] + fBlendX * seed[sampleY2 * width + sampleX2];
+                float sampleT = (1.0f - blendX) * seed[sampleY1 * width + sampleX1] + blendX * seed[sampleY1 * width + sampleX2];
+                float sampleB = (1.0f - blendX) * seed[sampleY2 * width + sampleX1] + blendX * seed[sampleY2 * width + sampleX2];
 
                 scaleAccumulated += scale;
                 noise += (blendY * (sampleB - sampleT) + sampleT) * scale;
-                scale = scale / bias;
             }
 
             // Scale to seed range
@@ -52,16 +53,21 @@ void Map::generate(int width, int height)
     // map to tiles
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
-            float tileValue = perlinNoise[y * width + x] * 3.0f;
+            float tileValue = perlinNoise[y * width + x];
 
-            if (tileValue < 0.35) {
-                Game::addTile(0, x * mapScale, y * mapScale);
+            //  std::cout << tileValue << std::endl;
+
+            if (tileValue < 0.32) {
+                Game::addTile(TileComponent::ROCK, x * mapScale, y * mapScale);
             }
-            else if (tileValue >= 0.35 && tileValue < 0.6) {
-                Game::addTile(1, x * mapScale, y * mapScale);
+            else if (tileValue < 0.6) {
+                Game::addTile(TileComponent::GRASS, x * mapScale, y * mapScale);
+            }
+            else if (tileValue < 0.65) {
+                Game::addTile(TileComponent::SAND, x * mapScale, y * mapScale);
             }
             else {
-                Game::addTile(2, x * mapScale, y * mapScale);
+                Game::addTile(TileComponent::WATER, x * mapScale, y * mapScale);
             }
         }
     }
