@@ -60,7 +60,10 @@ void Map::generate(int width, int height)
             tile.x = x * mapScale;
             tile.y = y * mapScale;
 
-            if (tileValue < 0.32) {
+            if (tileValue < 0.15) {
+                tile.typeId = TileComponent::SNOW;
+            }
+            else if (tileValue < 0.32) {
                 tile.typeId = TileComponent::ROCK;
             }
             else if (tileValue < 0.6) {
