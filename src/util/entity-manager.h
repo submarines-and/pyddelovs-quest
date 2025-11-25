@@ -7,7 +7,7 @@
 
 class Component;
 class Entity;
-class Manager;
+class EntityManager;
 
 using ComponentId = std::size_t;
 using Group = std::size_t;
@@ -60,7 +60,7 @@ public:
 class Entity {
 
 private:
-    Manager& manager;
+    EntityManager& manager;
     /** Remove from game if false*/
     bool active = true;
 
@@ -73,7 +73,7 @@ private:
     GroupBitSet groupBitSet;
 
 public:
-    Entity(Manager& man) : manager(man) {}
+    Entity(EntityManager& man) : manager(man) {}
 
     void update()
     {
@@ -145,7 +145,7 @@ public:
 };
 
 /** Manager keeps track of all entities*/
-class Manager {
+class EntityManager {
 private:
     /** All entities in manager*/
     std::vector<std::unique_ptr<Entity>> entities;

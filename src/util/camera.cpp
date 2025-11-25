@@ -1,9 +1,9 @@
 #include "camera.h"
 
-void Camera::setPosition(int w, int h)
+Camera::Camera(int width, int height)
 {
-    windowSize = {0, 0, w, h};
-    position = {0, 0, w, h};
+    windowSize = {0, 0, width, height};
+    position = {0, 0, width, height};
 }
 
 void Camera::update(Vector2d playerPosition)

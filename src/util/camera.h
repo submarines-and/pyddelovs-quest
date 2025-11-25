@@ -1,13 +1,14 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include "vector2d.h"
+#include "util/vector2d.h"
 
 class Camera {
 private:
     SDL_Rect windowSize;
 
 public:
+    Camera(int width, int height);
+    
     SDL_Rect position;
-    void setPosition(int w, int h);
     void update(Vector2d playerPosition);
 };

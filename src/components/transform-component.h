@@ -1,6 +1,6 @@
 #pragma once
-#include "../ecs.h"
-#include "../vector2d.h"
+#include "util/entity-manager.h"
+#include "util/vector2d.h"
 
 class TransformComponent : public Component {
 public:
