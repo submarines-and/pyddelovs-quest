@@ -9,7 +9,7 @@
 
 class CollisionSystem : public System {
 public:
-    void update(Entity player, Transform playerTransformBeforeUpdates)
+    void update(Entity player, Transform playerTransformBeforeUpdates, float deltaTime)
     {
         auto& playerTransform = global.ecs->getComponent<Transform>(player);
 
@@ -21,6 +21,7 @@ public:
                 auto& collision = global.ecs->getComponent<Collision>(e);
 
                 if (collision.collectible) {
+                    playerTransform.speed += 10;
                     global.sound->playSoundEffect("sound/money.wav");
                     global.ecs->destroyEntity(e);
                     break;
@@ -28,8 +29,8 @@ public:
 
                 // global.sound.playSoundEffect("sound/rock.wav");
 
-                playerTransform.position.x -= playerTransform.direction.x * playerTransform.speed;
-                playerTransform.position.y -= playerTransform.direction.y * playerTransform.speed;
+                playerTransform.position.x -= playerTransform.direction.x * playerTransform.speed * deltaTime;
+                playerTransform.position.y -= playerTransform.direction.y * playerTransform.speed * deltaTime;
                 break;
             }
         }

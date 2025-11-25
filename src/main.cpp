@@ -96,7 +96,7 @@ int main()
     global.ecs->addComponent(player, Player{});
     global.ecs->addComponent(player, Transform{
                                          .position = Vector2d(freeTile.x, freeTile.y),
-                                         .speed = 3,
+                                         .speed = 100,
                                      });
     global.ecs->addComponent(player, Sprite{
                                          .filepath = "assets/pyddelov.png",
@@ -118,7 +118,7 @@ int main()
     global.ecs->addComponent(krabbanKlo, AI{});
     global.ecs->addComponent(krabbanKlo, Transform{
                                              .position = Vector2d(freeTile.x * 2, freeTile.y * 2),
-                                             .speed = 1,
+                                             .speed = 100,
                                          });
     global.ecs->addComponent(krabbanKlo, Sprite{
                                              .filepath = "assets/krabbanklo.png",
@@ -143,8 +143,9 @@ int main()
 
         keyboardSystem->update();
         aiSystem->update(playerTransform.position);
-        transformSystem->update(playerTransform.position);
-        collisionSystem->update(player, playerTransform);
+
+        transformSystem->update(playerTransform.position, delta / 100.0f);
+        collisionSystem->update(player, playerTransform, delta / 100.0f);
         spriteSystem->update();
 
         delta = SDL_GetTicks() - start;
