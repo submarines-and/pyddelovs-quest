@@ -1,6 +1,6 @@
 #include "global.h"
 #include "util/camera.h"
-#include "entity/pyddelov.h"
+#include "entities/pyddelov.h"
 #include "components/transform-component.h"
 #include "systems/collision.h"
 
