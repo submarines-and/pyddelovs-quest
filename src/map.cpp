@@ -63,7 +63,7 @@ void Map::generate(int width, int height)
             if (tileValue < 0.15) {
                 tile.typeId = TileComponent::SNOW;
             }
-            else if (tileValue < 0.32) {
+            else if (tileValue < 0.3) {
                 tile.typeId = TileComponent::ROCK;
             }
             else if (tileValue < 0.6) {
