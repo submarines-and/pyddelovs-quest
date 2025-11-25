@@ -71,6 +71,8 @@ public:
                     break;
                 }
             }
+
+            transform.direction.normalize();
         }
     }
 };

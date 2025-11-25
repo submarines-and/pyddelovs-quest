@@ -21,7 +21,7 @@ public:
                 auto& collision = global.ecs->getComponent<Collision>(e);
 
                 if (collision.treasureId != -1) {
-                    playerTransform.speed += 10;
+                    playerTransform.speed += 5;
                     global.score->pickupTreasure(collision.treasureId);
                     global.sound->playSoundEffect("sound/money.wav");
                     global.ecs->destroyEntity(e);
