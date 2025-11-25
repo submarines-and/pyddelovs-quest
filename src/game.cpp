@@ -70,17 +70,20 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
             break;
         }
 
+        // place on a grass tile
         auto tile = Map::tiles[i];
-        if (tile.typeId == TileComponent::GRASS) {
+        if (tile.typeId == TileComponent::SNOW) {
             player.addComponent<TransformComponent>(tile.x, tile.y);
             placed = true;
         }
     }
 
-    player.addComponent<SpriteComponent>("assets/pyddelov-ss.png", 4, 100);
-    player.addComponent<KeyboardComponent>();
-    player.addComponent<CollisionComponent>("player");
-    player.addGroup(PLAYER);
+    if (placed) {
+        player.addComponent<SpriteComponent>("assets/pyddelov-ss.png", 4, 100);
+        player.addComponent<KeyboardComponent>();
+        player.addComponent<CollisionComponent>("player");
+        player.addGroup(PLAYER);
+    }
 }
 
 void Game::handleEvents()
@@ -103,18 +106,20 @@ void Game::update()
     manager.update();
 
     // bounce on collision
-    auto playerCollision = player.getComponent<CollisionComponent>();
+    if (player.hasComponent<CollisionComponent>()) {
+        auto playerCollision = player.getComponent<CollisionComponent>();
 
-    for (auto c : colliders) {
+        for (auto c : colliders) {
 
-        // player cant collide with self
-        if (playerCollision.tag == c->tag) {
-            continue;
-        }
+            // player cant collide with self
+            if (playerCollision.tag == c->tag) {
+                continue;
+            }
 
-        if (SDL_HasIntersection(&playerCollision.collider, &c->collider)) {
-            player.getComponent<TransformComponent>().velocity * -1;
-            break;
+            if (SDL_HasIntersection(&playerCollision.collider, &c->collider)) {
+                player.getComponent<TransformComponent>().velocity * -1;
+                break;
+            }
         }
     }
 }
