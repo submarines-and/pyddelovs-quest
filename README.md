@@ -1,7 +1,7 @@
 # Pyddelovs Quest
 You are a small fox and the winter is very cold. Will you make it home to your den in time?
 
-![Pyddelov](./assets/pyddelov.png)
+<img src="./assets/pyddelov.png" width="200"/>
 
 
 
