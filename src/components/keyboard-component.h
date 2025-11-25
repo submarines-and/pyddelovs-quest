@@ -23,6 +23,7 @@ public:
             case SDLK_w:
             case SDLK_UP:
                 transform->velocity.y = -1;
+                sprite->spriteFlipped = SDL_FLIP_VERTICAL;
                 sprite->playAnimation("Walk");
                 break;
 
