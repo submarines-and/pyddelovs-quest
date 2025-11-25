@@ -18,7 +18,10 @@ public:
     void render();
     void clean();
 
+
     bool running() { return isRunning; }
+
+    static void addTile(int id, int x, int y);
 
     /** Global renderer */
     static SDL_Renderer* renderer;

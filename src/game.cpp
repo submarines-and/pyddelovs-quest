@@ -11,18 +11,13 @@
 #include "vector2d.h"
 #include "collision.h"
 
-Map* map;
 Manager manager;
-
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 
 std::vector<CollisionComponent*> Game::colliders;
 
 auto& player(manager.addEntity());
-
-auto& waterTile(manager.addEntity());
-auto& dirtTile(manager.addEntity());
 
 Game::Game() {
 }
@@ -46,12 +41,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         isRunning = false;
     }
 
-    // starting map?
-    map = new Map();
-
-    dirtTile.addComponent<TileComponent>(250, 250, 32, 32, TileComponent::DIRT);
-    waterTile.addComponent<TileComponent>(200, 200, 32, 32, TileComponent::WATER);
-    waterTile.addComponent<CollisionComponent>();
+    Map::generate(width, height);
 
     player.addComponent<TransformComponent>(100.0f, 100.0f);
     player.addComponent<SpriteComponent>("assets/pyddelov.png");
@@ -80,7 +70,7 @@ void Game::update() {
     auto playerCollision = player.getComponent<CollisionComponent>();
 
     for (auto c : colliders) {
-        
+
         // cant collide with itself
         if (playerCollision.tag == c->tag) {
             continue;
@@ -94,7 +84,6 @@ void Game::update() {
 
 void Game::render() {
     SDL_RenderClear(renderer);
-    map->render();
     manager.render();
     SDL_RenderPresent(renderer);
 }
@@ -103,4 +92,9 @@ void Game::clean() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
+}
+
+void Game::addTile(int id, int x, int y) {
+    auto& tile(manager.addEntity());
+    tile.addComponent<TileComponent>(x, y, 32, 32, id);
 }

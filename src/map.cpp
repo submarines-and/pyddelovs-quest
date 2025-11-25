@@ -1,81 +1,67 @@
 #include "map.h"
-#include "texture-manager.h"
+#include "game.h"
 
-/**
- * Hard coded map
- *
- * 0: Water
- * 1: Grass
- * 2: dirt
- */
-int levelOne[20][25] = {
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-};
+/** Generate noise map with tiles */
+void Map::generate(int width, int height)
+{
+    float* seed = new float[width * height];
+    for (int i = 0; i < width * height; i++) {
+        seed[i] = (float)rand() / (float)RAND_MAX;
+    }
 
-Map::Map() {
-    dirt = TextureManager::loadTexture("assets/dirt.png");
-    grass = TextureManager::loadTexture("assets/grass.png");
-    water = TextureManager::loadTexture("assets/water.png");
+    float bias = 2.0f;
+    int octaves = 5;
+    int mapScale = 32;
 
-    load(levelOne);
+    width /= mapScale;
+    height /= mapScale;
 
-    src.x = src.y = dest.x = dest.y = 0;
-    src.w = src.h = dest.w = dest.h = 32;
-}
+    float* perlinNoise = new float[width * height];
 
-Map::~Map() {
-    SDL_DestroyTexture(grass);
-    SDL_DestroyTexture(water);
-    SDL_DestroyTexture(dirt);
-}
+    // generate noise
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            float noise = 0.0f;
+            float scale = 1.0f;
+            float scaleAccumulated = 0.0f;
 
-void Map::load(int array[20][25]) {
-    for (int row = 0; row < 20; row++) {
-        for (int column = 0; column < 25; column++) {
-            currentMap[row][column] = array[row][column];
+            for (int o = 0; o < octaves; o++) {
+                int pitch = width >> o;
+                int sampleX1 = (x / pitch) * pitch;
+                int sampleY1 = (y / pitch) * pitch;
+
+                int sampleX2 = (sampleX1 + pitch) % width;
+                int sampleY2 = (sampleY1 + pitch) % width;
+
+                float fBlendX = (float)(x - sampleX1) / (float)pitch;
+                float blendY = (float)(y - sampleY1) / (float)pitch;
+
+                float sampleT = (1.0f - fBlendX) * seed[sampleY1 * width + sampleX1] + fBlendX * seed[sampleY1 * width + sampleX2];
+                float sampleB = (1.0f - fBlendX) * seed[sampleY2 * width + sampleX1] + fBlendX * seed[sampleY2 * width + sampleX2];
+
+                scaleAccumulated += scale;
+                noise += (blendY * (sampleB - sampleT) + sampleT) * scale;
+                scale = scale / bias;
+            }
+
+            // Scale to seed range
+            perlinNoise[y * width + x] = noise / scaleAccumulated;
         }
     }
-}
 
-void Map::render() {
-    for (int row = 0; row < 20; row++) {
-        for (int column = 0; column < 25; column++) {
-            dest.x = column * 32;
-            dest.y = row * 32;
+    // map to tiles
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            float tileValue = perlinNoise[y * width + x] * 3.0f;
 
-            switch (currentMap[row][column]) {
-
-            default:
-            case WATER:
-                TextureManager::render(water, src, dest);
-                break;
-
-            case GRASS:
-                TextureManager::render(grass, src, dest);
-                break;
-
-            case DIRT:
-                TextureManager::render(dirt, src, dest);
-                break;
+            if (tileValue < 0.35) {
+                Game::addTile(0, x * mapScale, y * mapScale);
+            }
+            else if (tileValue >= 0.35 && tileValue < 0.6) {
+                Game::addTile(1, x * mapScale, y * mapScale);
+            }
+            else {
+                Game::addTile(2, x * mapScale, y * mapScale);
             }
         }
     }
