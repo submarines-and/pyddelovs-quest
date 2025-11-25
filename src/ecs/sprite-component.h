@@ -1,6 +1,7 @@
 #pragma once
 #include "SDL2/SDL.h"
-#include "components.h"
+#include "ecs.h"
+#include "transform-component.h"
 
 class SpriteComponent : public Component {
 private:

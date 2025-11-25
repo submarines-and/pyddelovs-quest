@@ -1,7 +1,7 @@
 #pragma once
-#include "../game.h"
 #include "ecs.h"
-#include "components.h"
+#include "transform-component.h"
+#include "../game.h"
 
 class KeyboardComponent : public Component {
 public:
